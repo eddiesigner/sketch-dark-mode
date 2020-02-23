@@ -21,10 +21,16 @@
     "postinstall": "npm run build && skpm-link"
   },
   "devDependencies": {
-    "@skpm/builder": "^0.7.0"
+    "@skpm/builder": "^0.7.0",
+    "@skpm/extract-loader": "^2.0.2",
+    "css-loader": "^3.4.2",
+    "html-loader": "^0.5.5"
   },
-  "author": "Eduardo Gomez <this.eduardo@gmail.com>",
+  "resources": [
+    "resources/**/*.js"
+  ],
   "dependencies": {
     "sketch-module-web-view": "^3.4.1"
-  }
+  },
+  "author": "Eduardo Gomez <this.eduardo@gmail.com>"
 }

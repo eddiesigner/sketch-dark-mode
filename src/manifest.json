@@ -6,7 +6,13 @@
       "name": "Create Palette...",
       "identifier": "sketch-dark-mode.create-palette-identifier",
       "script": "./create-palette.js",
-      "shortcut": "shift cmd p"
+      "shortcut": "shift cmd p",
+      "handlers": {
+        "run": "onRun",
+        "actions": {
+          "Shutdown": "onShutdown"
+        }
+      }
     },
     {
       "name": "Create Dark Mode Page",
