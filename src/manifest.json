@@ -1,0 +1,25 @@
+{
+  "$schema": "https://raw.githubusercontent.com/sketch-hq/SketchAPI/develop/docs/sketch-plugin-manifest-schema.json",
+  "icon": "icon.png",
+  "commands": [
+    {
+      "name": "Create Palette...",
+      "identifier": "sketch-dark-mode.create-palette-identifier",
+      "script": "./create-palette.js",
+      "shortcut": "shift cmd p"
+    },
+    {
+      "name": "Create Dark Mode Page",
+      "identifier": "sketch-dark-mode.create-dark-mode-identifier",
+      "script": "./create-dark-mode.js",
+      "shortcut": "shift cmd d"
+    }
+  ],
+  "menu": {
+    "title": "🌓 Dark Mode Colors",
+    "items": [
+      "sketch-dark-mode.create-palette-identifier",
+      "sketch-dark-mode.create-dark-mode-identifier"
+    ]
+  }
+}
