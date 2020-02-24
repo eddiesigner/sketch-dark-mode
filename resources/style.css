@@ -7,13 +7,15 @@
 
 html {
   box-sizing: border-box;
-  background: transparent;
-
-  /* Prevent the page to be scrollable */
-  overflow: hidden;
+  background: #142541;
 
   /* Force the default cursor, even on text */
   cursor: default;
+}
+
+body {
+  min-height: 100vh;
+  font-family: -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 *, *:before, *:after {
@@ -34,8 +36,203 @@ input, textarea {
 
 /* Webview styles */
 
-body {
+.wrapper {
+  position: relative;
+  padding: 70px 0;
+}
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
-  height: 100vh;
-  background-color: #142541;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  height: 70px;
+  padding: 20px;
+  background: #1d304e;
+  border-bottom: 1px solid #0a0d1c;
+  z-index: 2;
+}
+
+.header-title {
+  color: white;
+  font-weight: 400;
+  font-size: 16px;
+  margin: 0;
+}
+
+.body {
+  position: relative;
+  padding: 20px 20px 5px;
+  z-index: 1;
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 70px;
+  padding: 15px 20px;
+  background: #1d304e;
+  border-top: 1px solid #0a0d1c;
+  z-index: 2;
+}
+
+.button {
+  display: block;
+  color: white;
+  font-weight: 500;
+  font-size: 13px;
+  letter-spacing: 0.2px;
+  padding: 15px;
+  border-radius: 5px;
+  background: #3366ff;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  -o-appearance: none !important;
+  -ms-appearance: none !important;
+  appearance: none !important;
+  border: 0;
+  outline: 0;
+  transition: background linear 0.1s;
+}
+
+.button:active,
+.button:focus {
+  background: #2253e6;
+}
+
+.button.in-footer {
+  padding: 0 15px;
+  height: 100%;
+  margin-left: 15px;
+}
+
+.color-theme {
+  border-radius: 5px;
+  background: #1d304e;
+  border: 1px solid #0a0d1c;
+  margin-bottom: 15px;
+}
+
+.color-theme-header {
+  padding: 15px;
+  border-bottom: 1px solid #0a0d1c;
+}
+
+.color-theme-header-title {
+  color: white;
+  font-size: 14px;
+  font-weight: 400;
+  margin: 0;
+}
+
+.color-theme-body {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+}
+
+.color-theme-body:hover .color-theme-preview:after {
+  opacity: 1;
+}
+
+.color-theme-body:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 1px;
+  height: 100%;
+  margin-left: -1px;
+  background: #0a0d1c;
+  z-index: 2;
+}
+
+.color-theme-body-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 50%;
+  height: 100%;
+  padding: 15px;
+}
+
+.color-theme-preview {
+  flex-shrink: 0;
+  position: relative;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.25);
+}
+
+.color-theme-preview:after {
+  position: absolute;
+  top: -4px;
+  left: -6px;
+  font-size: 14px;
+  opacity: 0;
+  z-index: 2;
+  pointer-events: none;
+  transition: opacity linear 0.2s;
+}
+
+.color-theme-preview.light:after {
+  content: '☀️';
+}
+
+.color-theme-preview.dark:after {
+  content: '🌒';
+}
+
+.color-theme-preview.empty:before {
+  content: '❔';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  font-size: 14px;
+  pointer-events: none;
+  background-color: transparent;
+  transform: translate(-50%, -50%);
+}
+
+.color-theme-input {
+  flex: 1;
+  width: calc(100% -55px);
+  min-width: 0;
+  color: #ececec;
+  font-size: 16px;
+  padding: 10px 0 10px 15px;
+  margin-left: 15px;
+  border-radius: 5px;
+  background: #0d1c2f;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  -o-appearance: none !important;
+  -ms-appearance: none !important;
+  appearance: none !important;
+  border: 0;
+  outline: 0;
+}
+
+.donate {
+  display: flex;
+  align-items: center;
+  color: #ececec;
+  text-decoration: none;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.donate span {
+  display: inline-block;
+  font-size: 13px;
+  margin-left: 5px;
 }

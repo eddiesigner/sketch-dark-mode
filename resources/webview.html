@@ -7,6 +7,62 @@
   </head>
 
   <body data-app-region="drag">
+    <div class="wrapper">
+      <div class="header">
+        <h1 class="header-title">Sketch Dark Mode Palette</h1>
+      </div>
+      <div class="body">
+        <div class="color-theme">
+          <div class="color-theme-header">
+            <h4 class="color-theme-header-title">Foreground</h4>
+          </div>
+          <div class="color-theme-body">
+            <div class="color-theme-body-section">
+              <div class="color-theme-preview light" style="background: #dee2ed;"></div>
+              <input type="text" class="color-theme-input" placeholder="Hex color" value="#dee2ed">
+            </div>
+            <div class="color-theme-body-section">
+              <div class="color-theme-preview dark" style="background: #273b5c;"></div>
+              <input type="text" class="color-theme-input" placeholder="Hex color" value="#273b5c">
+            </div>
+          </div>
+        </div>
+        <div class="color-theme">
+          <div class="color-theme-header">
+            <h4 class="color-theme-header-title">Primary</h4>
+          </div>
+          <div class="color-theme-body">
+            <div class="color-theme-body-section">
+              <div class="color-theme-preview light" style="background: #3366ff;"></div>
+              <input type="text" class="color-theme-input" placeholder="Hex color" value="#3366ff">
+            </div>
+            <div class="color-theme-body-section">
+              <div class="color-theme-preview dark" style="background: #ff870f;"></div>
+              <input type="text" class="color-theme-input" placeholder="Hex color" value="#ff870f">
+            </div>
+          </div>
+        </div>
+        <div class="color-theme">
+          <div class="color-theme-header">
+            <h4 class="color-theme-header-title">Label</h4>
+          </div>
+          <div class="color-theme-body">
+            <div class="color-theme-body-section">
+              <div class="color-theme-preview light" style="background: #8e97a7;"></div>
+              <input type="text" class="color-theme-input" placeholder="Hex color" value="#8e97a7">
+            </div>
+            <div class="color-theme-body-section">
+              <div class="color-theme-preview dark empty"></div>
+              <input type="text" class="color-theme-input" placeholder="Hex color">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="footer">
+        <a href="#" class="donate">Donate <span>🧡</span></a>
+        <button class="button in-footer">Save Palette</button>
+      </div>
+    </div>
     <!-- notice the "../resources_" here. It's because webview.js will be compiled in a different folder with the prefix. -->
     <script src="../resources_webview.js"></script>
   </body>

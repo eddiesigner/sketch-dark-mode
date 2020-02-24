@@ -16,8 +16,12 @@ export function onShutdown() {
 export default () => {
   const windowOptions = {
     identifier: webviewIdentifier,
-    width: 375,
-    height: 667,
+    width: 460,
+    minWidth: 460,
+    maxWidth: 740,
+    height: 740,
+    minHeight: 460,
+    maxHeight: 960,
     titleBarStyle: 'hidden',
     show: false
   }
