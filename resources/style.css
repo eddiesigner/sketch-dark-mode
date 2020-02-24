@@ -9,6 +9,9 @@ html {
   box-sizing: border-box;
   background: #142541;
 
+  /* Prevent the page to be scrollable */
+  overflow: hidden;
+
   /* Force the default cursor, even on text */
   cursor: default;
 }
@@ -37,16 +40,15 @@ input, textarea {
 /* Webview styles */
 
 .wrapper {
+  display: flex;
+  flex-direction: column;
   position: relative;
-  padding: 70px 0;
+  height: 100vh;
 }
 
 .header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
   display: flex;
+  flex-shrink: 0;
   align-items: flex-end;
   justify-content: center;
   height: 70px;
@@ -64,19 +66,18 @@ input, textarea {
 }
 
 .body {
+  flex: 1;
   position: relative;
-  padding: 20px 20px 5px;
+  padding: 20px;
+  overflow-y: auto;
   z-index: 1;
 }
 
 .footer {
   display: flex;
+  flex-shrink: 0;
   align-items: center;
   justify-content: space-between;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
   height: 70px;
   padding: 15px 20px;
   background: #1d304e;

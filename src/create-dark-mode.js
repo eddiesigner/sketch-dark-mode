@@ -1,6 +1,7 @@
 import sketch from 'sketch/dom'
 
 const Style = sketch.Style
+const sketchVersion = sketch.version.sketch
 const doc = sketch.getSelectedDocument()
 const documentColors = doc.colors
 const darkThemeColors = [
@@ -85,19 +86,44 @@ const switchShapeTheme = (shapeLayer) => {
 
 const switchSymbolInstanceTheme = (symbolInstance) => {
   const group = symbolInstance.detach()
-  const groupLayers = sketch.find('*', group)
 
-  groupLayers.forEach((groupLayer) => {
-    switchLayerThemeBasedOnType(groupLayer)
-  })
+  if (sketchVersion < '56') {
+    const nativeLayers = group.sketchObject.children()
+
+    nativeLayers.forEach((nativeLayer) => {
+      const layer = sketch.fromNative(nativeLayer)
+
+      if (layer.type !== 'SymbolInstance') {
+        switchLayerThemeBasedOnType(layer)
+      }
+    })
+  } else {
+    const groupLayers = sketch.find('*', group)
+
+    groupLayers.forEach((groupLayer) => {
+      switchLayerThemeBasedOnType(groupLayer)
+    })
+  }
 }
 
 const switchSymbolMasterTheme = (symbolMaster) => {
-  const masterLayers = sketch.find('*', symbolMaster)
+  if (sketchVersion < '56') {
+    const nativeLayers = symbolMaster.sketchObject.children()
 
-  masterLayers.forEach((masterLayer) => {
-    switchLayerThemeBasedOnType(masterLayer)
-  })
+    nativeLayers.forEach((nativeLayer) => {
+      const layer = sketch.fromNative(nativeLayer)
+
+      if (layer.type !== 'SymbolMaster') {
+        switchLayerThemeBasedOnType(layer)
+      }
+    })
+  } else {
+    const masterLayers = sketch.find('*', symbolMaster)
+
+    masterLayers.forEach((masterLayer) => {
+      switchLayerThemeBasedOnType(masterLayer)
+    })
+  }
 }
 
 const switchLayerThemeBasedOnType = (layer) => {
@@ -127,24 +153,52 @@ export default () => {
   duplicatePage.name = `[Dark mode] - ${selectedPage.name}`
 
   if (selectedPage.isSymbolsPage()) {
-    const symbolMasters = sketch.find('SymbolMaster', duplicatePage)
+    let symbolMasters = []
+
+    if (sketchVersion < '56') {
+      symbolMasters = duplicatePage.layers.filter((layer) => {
+        return layer.type === 'SymbolMaster'
+      })
+    } else {
+      symbolMasters = sketch.find('SymbolMaster', duplicatePage)
+    }
 
     symbolMasters.forEach((symbolMaster) => {
       switchLayerThemeBasedOnType(symbolMaster)
     })
   } else {
-    const artboards = sketch.find('Artboard', duplicatePage)
+    let artboards = []
+
+    if (sketchVersion < '56') {
+      artboards = duplicatePage.layers.filter((layer) => {
+        return layer.type === 'Artboard'
+      })
+    } else {
+      artboards = sketch.find('Artboard', duplicatePage)
+    }
 
     artboards.forEach((artboard) => {
       if (artboard.background.enabled) {
         switchArtboardTheme(artboard)
       }
 
-      const layers = sketch.find('*', artboard)
+      if (sketchVersion < '56') {
+        const nativeLayers = artboard.sketchObject.children()
 
-      layers.forEach((layer) => {
-        switchLayerThemeBasedOnType(layer)
-      })
+        nativeLayers.forEach((nativeLayer) => {
+          const layer = sketch.fromNative(nativeLayer)
+
+          if (layer.type !== 'Artboard') {
+            switchLayerThemeBasedOnType(layer)
+          }
+        })
+      } else {
+        const layers = sketch.find('*', artboard)
+
+        layers.forEach((layer) => {
+          switchLayerThemeBasedOnType(layer)
+        })
+      }
     }) 
   }
 }
