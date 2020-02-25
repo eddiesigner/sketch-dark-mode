@@ -35,9 +35,8 @@ export default () => {
 
   const webContents = browserWindow.webContents
 
-  // print a message when the page loads
-  webContents.on('did-finish-load', () => {
-    UI.message('UI loaded!')
+  webContents.on('externalLinkClicked', (url) => {
+    NSWorkspace.sharedWorkspace().openURL(NSURL.URLWithString(url))
   })
 
   browserWindow.loadURL(require('../resources/webview.html'))
