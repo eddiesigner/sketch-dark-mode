@@ -172,6 +172,8 @@ export default () => {
     return
   }
 
+  UI.message('⏳ Generating...')
+
   const duplicatePage = selectedPage.duplicate()
   duplicatePage.name = `[Dark mode] - ${selectedPage.name}`
 
