@@ -1,4 +1,11 @@
 import sketch from 'sketch/dom'
+import UI from 'sketch/ui'
+import {
+  isSupportedVersion,
+  hasNoColors,
+  hasColorsWithoutName,
+  hasFindMethodSupport
+} from './common'
 
 const Style = sketch.Style
 const sketchVersion = sketch.version.sketch
@@ -87,16 +94,8 @@ const switchShapeTheme = (shapeLayer) => {
 const switchSymbolInstanceTheme = (symbolInstance) => {
   const group = symbolInstance.detach()
 
-  if (sketchVersion < '56') {
-    const nativeLayers = group.sketchObject.children()
-
-    nativeLayers.forEach((nativeLayer) => {
-      const layer = sketch.fromNative(nativeLayer)
-
-      if (layer.type !== 'SymbolInstance') {
-        switchLayerThemeBasedOnType(layer)
-      }
-    })
+  if (!hasFindMethodSupport(sketchVersion)) {
+    switchNativeLayersBasedOnType(group, 'SymbolInstance')
   } else {
     const groupLayers = sketch.find('*', group)
 
@@ -107,16 +106,8 @@ const switchSymbolInstanceTheme = (symbolInstance) => {
 }
 
 const switchSymbolMasterTheme = (symbolMaster) => {
-  if (sketchVersion < '56') {
-    const nativeLayers = symbolMaster.sketchObject.children()
-
-    nativeLayers.forEach((nativeLayer) => {
-      const layer = sketch.fromNative(nativeLayer)
-
-      if (layer.type !== 'SymbolMaster') {
-        switchLayerThemeBasedOnType(layer)
-      }
-    })
+  if (!hasFindMethodSupport(sketchVersion)) {
+    switchNativeLayersBasedOnType(symbolMaster, 'SymbolMaster')
   } else {
     const masterLayers = sketch.find('*', symbolMaster)
 
@@ -124,6 +115,18 @@ const switchSymbolMasterTheme = (symbolMaster) => {
       switchLayerThemeBasedOnType(masterLayer)
     })
   }
+}
+
+const switchNativeLayersBasedOnType = (context, type) => {
+  const nativeLayers = context.sketchObject.children()
+
+  nativeLayers.forEach((nativeLayer) => {
+    const layer = sketch.fromNative(nativeLayer)
+
+    if (layer.type !== type) {
+      switchLayerThemeBasedOnType(layer)
+    }
+  })
 }
 
 const switchLayerThemeBasedOnType = (layer) => {
@@ -147,15 +150,35 @@ const switchLayerThemeBasedOnType = (layer) => {
 }
 
 export default () => {
-  const selectedPage = doc.selectedPage
-  const duplicatePage = selectedPage.duplicate()
+  if (!isSupportedVersion(sketchVersion)) {
+    UI.message('⚠️ This plugin only works on Sketch 53 or above.')
+    return
+  }
 
+  const selectedPage = doc.selectedPage
+
+  if (!selectedPage) {
+    UI.message('⚠️ Please select a page first.')
+    return
+  }
+
+  if (hasNoColors(doc)) {
+    UI.message('⚠️ You have to create document colors first for the plugin to work.')
+    return false
+  }
+
+  if (hasColorsWithoutName(documentColors)) {
+    UI.message('⚠️ Please set a name to all the document colors.')
+    return
+  }
+
+  const duplicatePage = selectedPage.duplicate()
   duplicatePage.name = `[Dark mode] - ${selectedPage.name}`
 
   if (selectedPage.isSymbolsPage()) {
     let symbolMasters = []
 
-    if (sketchVersion < '56') {
+    if (!hasFindMethodSupport(sketchVersion)) {
       symbolMasters = duplicatePage.layers.filter((layer) => {
         return layer.type === 'SymbolMaster'
       })
@@ -169,7 +192,7 @@ export default () => {
   } else {
     let artboards = []
 
-    if (sketchVersion < '56') {
+    if (!hasFindMethodSupport(sketchVersion)) {
       artboards = duplicatePage.layers.filter((layer) => {
         return layer.type === 'Artboard'
       })
@@ -182,16 +205,8 @@ export default () => {
         switchArtboardTheme(artboard)
       }
 
-      if (sketchVersion < '56') {
-        const nativeLayers = artboard.sketchObject.children()
-
-        nativeLayers.forEach((nativeLayer) => {
-          const layer = sketch.fromNative(nativeLayer)
-
-          if (layer.type !== 'Artboard') {
-            switchLayerThemeBasedOnType(layer)
-          }
-        })
+      if (!hasFindMethodSupport(sketchVersion)) {
+        switchNativeLayersBasedOnType(artboard, 'Artboard')
       } else {
         const layers = sketch.find('*', artboard)
 
@@ -201,4 +216,6 @@ export default () => {
       }
     }) 
   }
+
+  UI.message('🎉 Dark theme generated!')
 }
