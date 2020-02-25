@@ -68,9 +68,9 @@ input, textarea {
 .body {
   flex: 1;
   position: relative;
-  padding: 20px;
-  overflow-y: auto;
   z-index: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .footer {
@@ -113,6 +113,10 @@ input, textarea {
   padding: 0 15px;
   height: 100%;
   margin-left: 15px;
+}
+
+.colors-list {
+  padding: 20px 20px 5px 20px;
 }
 
 .color-theme {
