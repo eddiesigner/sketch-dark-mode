@@ -130,9 +130,6 @@ input, textarea {
   border-radius: 5px;
   background: var(--button-background-color);
   -webkit-appearance: none !important;
-  -moz-appearance: none !important;
-  -o-appearance: none !important;
-  -ms-appearance: none !important;
   appearance: none !important;
   border: 0;
   outline: 0;
@@ -259,23 +256,64 @@ input, textarea {
   transform: translate(-50%, -50%);
 }
 
-.color-theme-input {
+.color-theme-fieldset {
   flex: 1;
   width: calc(100% -55px);
+  padding: 0 0 0 15px;
+  position: relative;
+}
+
+.color-theme-fieldset:hover .color-theme-picker span {
+  opacity: 1;
+}
+
+.color-theme-input {
+  position: relative;
+  width: 100%;
   min-width: 0;
   color: var(--input-color);
   font-size: 16px;
-  padding: 10px 0 10px 15px;
-  margin-left: 15px;
+  padding: 10px 40px 10px 15px;
   border-radius: 5px;
   background: var(--input-background-color);
   -webkit-appearance: none !important;
-  -moz-appearance: none !important;
-  -o-appearance: none !important;
-  -ms-appearance: none !important;
   appearance: none !important;
   border: 0;
   outline: 0;
+}
+
+.color-theme-picker {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 40px;
+  height: 100%;
+  z-index: 2;
+}
+
+.color-theme-picker span {
+  font-size: 16px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  opacity: 0;
+  z-index: 1;
+  transform: translate(-50%, -50%);
+  transition: opacity linear 0.1s;
+}
+
+.color-theme-picker input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  -webkit-appearance: none !important;
+  appearance: none !important;
+  border: 0;
+  outline: 0;
+  opacity: 0;
+  z-index: 2;
 }
 
 .color-theme-input:focus {

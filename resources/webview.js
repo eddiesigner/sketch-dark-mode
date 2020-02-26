@@ -20,21 +20,39 @@ const interceptClickEvent = (event) => {
 }
 
 const handleDarkThemeColorsChanges = () => {
-  const $darkThemeColors = $('.js-color-theme-input-dark')
+  const $darkThemeInputs = $('.js-color-theme-input-dark')
+  const $darkThemePickers = $('.js-color-theme-picker-dark')
 
-  $darkThemeColors.on('change paste keyup', function () {
-    const colorValue = $(this).val()
-    const $colorPreview = $(this).parent().find('.js-color-theme-preview-dark')
+  const setPreviewColor = ($input, fromPicker = false) => {
+    const colorValue = $input.val()
+    const $colorPreview = $input
+      .closest('.js-color-theme-body-section')
+      .find('.js-color-theme-preview-dark')
 
     if (isValidColor(colorValue)) {
       $colorPreview
         .removeClass('empty')
         .css('background-color', colorValue)
+
+      if (fromPicker) {
+        $input
+          .closest('.js-color-theme-fieldset')
+          .find('.js-color-theme-input-dark')
+          .val(colorValue)
+      }
     } else {
       $colorPreview
         .addClass('empty')
         .css('background-color', 'transparent')
     }
+  }
+
+  $darkThemeInputs.on('change paste keyup', function () {
+    setPreviewColor($(this))
+  })
+
+  $darkThemePickers.on('change input', function() {
+    setPreviewColor($(this), true)
   })
 }
 

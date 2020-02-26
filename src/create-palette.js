@@ -25,12 +25,12 @@ export function onShutdown() {
 export default () => {
   const windowOptions = {
     identifier: webviewIdentifier,
-    width: 460,
-    minWidth: 460,
-    maxWidth: 460,
-    height: 740,
-    minHeight: 460,
-    maxHeight: 960,
+    width: 480,
+    minWidth: 480,
+    maxWidth: 480,
+    height: 760,
+    minHeight: 480,
+    maxHeight: 980,
     titleBarStyle: 'hidden',
     show: false,
     fullscreenable: false,
@@ -59,8 +59,11 @@ export default () => {
   })
 
   webContents.on('saveDarkThemePalette', (darkThemeColors) => {
-    Settings.setSettingForKey(`${doc.id}-dark-theme-colors`, darkThemeColors)
-    UI.message('🎉 The color palette has been successfully saved!')
+    if (darkThemeColors && darkThemeColors.length > 0) {
+      Settings.setSettingForKey(`${doc.id}-dark-theme-colors`, darkThemeColors)
+      UI.message('🎉 The color palette has been successfully saved!')
+    }
+
     closeWwebView()
   })
 
