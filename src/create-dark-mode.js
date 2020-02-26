@@ -1,4 +1,5 @@
 import sketch from 'sketch/dom'
+import Settings from 'sketch/settings'
 import UI from 'sketch/ui'
 import {
   isSupportedVersion,
@@ -11,35 +12,7 @@ const Style = sketch.Style
 const sketchVersion = sketch.version.sketch
 const doc = sketch.getSelectedDocument()
 const documentColors = doc.colors
-const darkThemeColors = [
-  {
-    type: 'ColorAsset', name: 'foreground', color: '#efefefff'
-  },
-  {
-    type: 'ColorAsset', name: 'background', color: '#000000ff'
-  },
-  {
-    type: 'ColorAsset', name: 'border', color: '#222222ff'
-  },
-  {
-    type: 'ColorAsset', name: 'subtle', color: '#111111ff'
-  },
-  {
-    type: 'ColorAsset', name: 'text', color: '#ddddddff'
-  },
-  {
-    type: 'ColorAsset', name: 'secondary-subtle', color: '#0a0a0cff'
-  },
-  {
-    type: 'ColorAsset', name: 'empty', color: '#141414ff'
-  },
-  {
-    type: 'ColorAsset', name: 'success', color: '#c7f7caff'
-  },
-  {
-    type: 'ColorAsset', name: 'placeholder', color: '#6f6f6fff'
-  }
-]
+const savedDarkThemeColors = Settings.settingForKey(`${doc.id}-dark-theme-colors`)
 
 const switchColor = (color) => {
   const foundColor = documentColors.find((documentColor) => {
@@ -54,7 +27,7 @@ const switchColor = (color) => {
 }
 
 const getDarkThemeColor = (documentColor) => {
-  const foundColor = darkThemeColors.find((darkThemeColor) => {
+  const foundColor = savedDarkThemeColors.find((darkThemeColor) => {
     return darkThemeColor.name === documentColor.name
   })
 
@@ -169,6 +142,11 @@ export default () => {
 
   if (hasColorsWithoutName(documentColors)) {
     UI.message('⚠️ Please set a name to all the document colors.')
+    return
+  }
+
+  if (!savedDarkThemeColors || savedDarkThemeColors.length === 0) {
+    UI.message('⚠️ Please create the color palette first.')
     return
   }
 

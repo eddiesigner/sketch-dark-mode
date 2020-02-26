@@ -85,6 +85,13 @@ input, textarea {
   z-index: 2;
 }
 
+.buttons-container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  height: 100%;
+}
+
 .button {
   display: block;
   color: white;
@@ -104,15 +111,29 @@ input, textarea {
   transition: background linear 0.1s;
 }
 
-.button:active,
-.button:focus {
+.button:active:not(:disabled),
+.button:focus:not(:disabled) {
   background: #2253e6;
+}
+
+.button:disabled {
+  opacity: 0.5;
 }
 
 .button.in-footer {
   padding: 0 15px;
   height: 100%;
   margin-left: 15px;
+}
+
+.button.simple {
+  background-color: transparent !important;
+  transition: opacity linear 0.1s;
+}
+
+.button.simple:active,
+.button.simple:focus {
+  opacity: 0.5;
 }
 
 .colors-list {
@@ -240,4 +261,25 @@ input, textarea {
   display: inline-block;
   font-size: 13px;
   margin-left: 5px;
+}
+
+.error-message {
+  display: none;
+  color: white;
+  text-align: center;
+  padding: 100px 50px;
+  margin: 0 auto;
+}
+
+.error-message-title {
+  font-size: 18px;
+  font-weight: 500;
+  margin: 0 0 20px;
+}
+
+.error-message-description {
+  line-height: 1.5;
+  font-size: 14px;
+  max-width: 75%;
+  margin: 0 auto;
 }

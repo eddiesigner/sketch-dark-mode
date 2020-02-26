@@ -12,6 +12,14 @@
         <h1 class="header-title">Sketch Dark Mode Palette</h1>
       </div>
       <div class="body">
+        <div class="error-message js-error-message">
+          <h2 class="error-message-title">
+            ⚠️ Ooops!
+          </h2>
+          <p class="error-message-description">
+            You have to create document colors first for the plugin to work.
+          </p>
+        </div>
         <div class="colors-list js-colors-list">
           <div class="color-theme js-color-theme-prototype">
             <div class="color-theme-header">
@@ -32,7 +40,10 @@
       </div>
       <div class="footer">
         <a href="https://www.buymeacoffee.com/eddiesigner" target="_blank" class="donate">Donate <span>🧡</span></a>
-        <button class="button in-footer">Save Palette</button>
+        <div class="buttons-container">
+          <button class="button simple in-footer js-cancel-button">Cancel</button>
+          <button class="button in-footer js-save-button">Save Palette</button>
+        </div>
       </div>
     </div>
     <!-- notice the "../resources_" here. It's because webview.js will be compiled in a different folder with the prefix. -->

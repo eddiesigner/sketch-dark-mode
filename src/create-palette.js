@@ -1,18 +1,25 @@
 import sketch from 'sketch/dom'
+import Settings from 'sketch/settings'
+import UI from 'sketch/ui'
 import BrowserWindow from 'sketch-module-web-view'
 import { getWebview } from 'sketch-module-web-view/remote'
 
 const webviewIdentifier = 'sketch-dark-mode.webview'
 const doc = sketch.getSelectedDocument()
 const documentColors = doc.colors.length > 0 ? doc.colors : []
+const savedDarkThemeColors = Settings.settingForKey(`${doc.id}-dark-theme-colors`)
 
-// When the plugin is shutdown by Sketch (for example when the user disable the plugin)
-// we need to close the webview if it's open
-export function onShutdown() {
+const closeWwebView = () => {
   const existingWebview = getWebview(webviewIdentifier)
   if (existingWebview) {
     existingWebview.close()
   }
+}
+
+// When the plugin is shutdown by Sketch (for example when the user disable the plugin)
+// we need to close the webview if it's open
+export function onShutdown() {
+  closeWwebView()
 }
 
 export default () => {
@@ -47,8 +54,21 @@ export default () => {
     NSWorkspace.sharedWorkspace().openURL(NSURL.URLWithString(url))
   })
 
+  webContents.on('closeWindow', () => {
+    closeWwebView()
+  })
+
+  webContents.on('saveDarkThemePalette', (darkThemeColors) => {
+    Settings.setSettingForKey(`${doc.id}-dark-theme-colors`, darkThemeColors)
+    UI.message('🎉 The color palette has been successfully saved!')
+    closeWwebView()
+  })
+
   webContents.executeJavaScript(
-    `createPaletteUI(${JSON.stringify(documentColors)})`
+    `createPaletteUI(
+      ${JSON.stringify(documentColors)},
+      ${JSON.stringify(savedDarkThemeColors)}
+    )`
   )
     .then((res) => {
       console.log(res)
