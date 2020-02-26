@@ -166,6 +166,7 @@ input, textarea {
 }
 
 .colors-list {
+  opacity: 0;
   padding: 20px 20px 5px 20px;
 }
 
@@ -313,6 +314,6 @@ input, textarea {
 .error-message-description {
   line-height: 1.5;
   font-size: 14px;
-  max-width: 75%;
+  max-width: 95%;
   margin: 0 auto;
 }

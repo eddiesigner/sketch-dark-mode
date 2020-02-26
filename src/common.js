@@ -26,7 +26,7 @@ export const hasColorsWithoutName = (documentColors) => {
   let result = false
 
   for (let i = 0; i < documentColors.length; i++) {
-    if (documentColors[i].name.length === 0) {
+    if (!documentColors[i].name || documentColors[i].name.length === 0) {
       result = true
       break
     }

@@ -1,5 +1,9 @@
 import $ from './jquery'
-import { isValidColor, getRegularHexValue } from './utils'
+import {
+  isValidColor,
+  getRegularHexValue,
+  hasColorsWithoutName
+} from './utils'
 
 const $colorsList = $('.js-colors-list')
 const $errorMessage = $('.js-error-message')
@@ -15,7 +19,7 @@ const interceptClickEvent = (event) => {
   }
 }
 
-const handleDarkThemeColorsCHnages = () => {
+const handleDarkThemeColorsChanges = () => {
   const $darkThemeColors = $('.js-color-theme-input-dark')
 
   $darkThemeColors.on('change paste keyup', function () {
@@ -35,7 +39,7 @@ const handleDarkThemeColorsCHnages = () => {
 }
 
 window.createPaletteUI = (documentColors, savedDarkThemeColors) => {
-  if (documentColors.length > 0) {
+  if (documentColors.length > 0 && !hasColorsWithoutName(documentColors)) {
     const $colorThemePrototype = $('.js-color-theme-prototype')
 
     documentColors.forEach((documentColor) => {
@@ -86,7 +90,8 @@ window.createPaletteUI = (documentColors, savedDarkThemeColors) => {
     }
 
     $colorThemePrototype.remove()
-    handleDarkThemeColorsCHnages()
+    $colorsList.css('opacity', 1)
+    handleDarkThemeColorsChanges()
   } else {
     $colorsList.hide()
     $errorMessage.show()
