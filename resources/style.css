@@ -1,3 +1,31 @@
+/* CSS variables */
+
+:root {
+  --background-color: #eeeeee;
+  --bar-background-color: #ffffff;
+  --card-background-color: #f7f8fa;
+  --text-color: #121d2e;
+  --border-color: #bbbec2;
+  --input-color: #333;
+  --input-background-color: #d8dce7;
+  --button-background-color: #2253e6;
+  --link-color: #121d2e;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background-color: #142541;
+    --bar-background-color: #1d304e;
+    --card-background-color: #1d304e;
+    --text-color: #ffffff;
+    --border-color: #0a0d1c;
+    --input-color: #ececec;
+    --input-background-color: #0d1c2f;
+    --button-background-color: #2253e6;
+    --link-color: #ffffff;
+  }
+}
+
 /* some default styles to make the view more native like */
 
 .titlebar {
@@ -7,7 +35,7 @@
 
 html {
   box-sizing: border-box;
-  background: #142541;
+  background: var(--background-color);
 
   /* Prevent the page to be scrollable */
   overflow: hidden;
@@ -53,13 +81,13 @@ input, textarea {
   justify-content: center;
   height: 70px;
   padding: 20px;
-  background: #1d304e;
-  border-bottom: 1px solid #0a0d1c;
+  background: var(--bar-background-color);
+  border-bottom: 1px solid var(--border-color);
   z-index: 2;
 }
 
 .header-title {
-  color: white;
+  color: var(--text-color);
   font-weight: 400;
   font-size: 16px;
   margin: 0;
@@ -80,8 +108,8 @@ input, textarea {
   justify-content: space-between;
   height: 70px;
   padding: 15px 20px;
-  background: #1d304e;
-  border-top: 1px solid #0a0d1c;
+  background: var(--bar-background-color);
+  border-top: 1px solid var(--border-color);
   z-index: 2;
 }
 
@@ -100,7 +128,7 @@ input, textarea {
   letter-spacing: 0.2px;
   padding: 15px;
   border-radius: 5px;
-  background: #3366ff;
+  background: var(--button-background-color);
   -webkit-appearance: none !important;
   -moz-appearance: none !important;
   -o-appearance: none !important;
@@ -127,6 +155,7 @@ input, textarea {
 }
 
 .button.simple {
+  color: var(--link-color);
   background-color: transparent !important;
   transition: opacity linear 0.1s;
 }
@@ -142,18 +171,18 @@ input, textarea {
 
 .color-theme {
   border-radius: 5px;
-  background: #1d304e;
-  border: 1px solid #0a0d1c;
+  background: var(--card-background-color);
+  border: 1px solid var(--border-color);
   margin-bottom: 15px;
 }
 
 .color-theme-header {
   padding: 15px;
-  border-bottom: 1px solid #0a0d1c;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .color-theme-header-title {
-  color: white;
+  color: var(--text-color);
   font-size: 14px;
   font-weight: 400;
   margin: 0;
@@ -177,7 +206,7 @@ input, textarea {
   width: 1px;
   height: 100%;
   margin-left: -1px;
-  background: #0a0d1c;
+  background: var(--border-color);
   z-index: 2;
 }
 
@@ -233,12 +262,12 @@ input, textarea {
   flex: 1;
   width: calc(100% -55px);
   min-width: 0;
-  color: #ececec;
+  color: var(--input-color);
   font-size: 16px;
   padding: 10px 0 10px 15px;
   margin-left: 15px;
   border-radius: 5px;
-  background: #0d1c2f;
+  background: var(--input-background-color);
   -webkit-appearance: none !important;
   -moz-appearance: none !important;
   -o-appearance: none !important;
@@ -248,10 +277,14 @@ input, textarea {
   outline: 0;
 }
 
+.color-theme-input:focus {
+  box-shadow: 0 0 3px 1px rgb(34, 83, 230);;
+}
+
 .donate {
   display: flex;
   align-items: center;
-  color: #ececec;
+  color: var(--link-color);
   text-decoration: none;
   font-size: 14px;
   cursor: pointer;
@@ -265,7 +298,7 @@ input, textarea {
 
 .error-message {
   display: none;
-  color: white;
+  color: var(--text-color);
   text-align: center;
   padding: 100px 50px;
   margin: 0 auto;
