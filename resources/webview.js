@@ -10,6 +10,10 @@ const $errorMessage = $('.js-error-message')
 const $cancelButton = $('.js-cancel-button')
 const $saveButton = $('.js-save-button')
 
+/**
+ * 
+ * @param {Event} event 
+ */
 const interceptClickEvent = (event) => {
   const target = event.target.closest('a')
 
@@ -146,5 +150,5 @@ document.addEventListener('click', interceptClickEvent)
 
 // disable the context menu (eg. the right click menu) to have a more native feel
 document.addEventListener('contextmenu', (e) => {
-  // e.preventDefault()
+  e.preventDefault()
 })

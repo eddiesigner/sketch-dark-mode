@@ -1,3 +1,8 @@
+/**
+ * 
+ * @param {String} version 
+ * @returns {Boolean}
+ */
 export const isSupportedVersion = (version) => {
   if (version >= '53') {
     return true
@@ -6,6 +11,11 @@ export const isSupportedVersion = (version) => {
   return false
 }
 
+/**
+ * 
+ * @param {String} version 
+ * @returns {Boolean}
+ */
 export const hasFindMethodSupport = (version) => {
   if (version >= '56') {
     return true
@@ -14,6 +24,11 @@ export const hasFindMethodSupport = (version) => {
   return false
 }
 
+/**
+ * 
+ * @param {Document} document 
+ * @returns {Boolean}
+ */
 export const hasNoColors = (document) => {
   if (document.colors.length === 0) {
     return true
@@ -22,6 +37,11 @@ export const hasNoColors = (document) => {
   return false
 }
 
+/**
+ * 
+ * @param {Array} documentColors 
+ * @returns {Boolean}
+ */
 export const hasColorsWithoutName = (documentColors) => {
   let result = false
 

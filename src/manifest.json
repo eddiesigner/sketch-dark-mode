@@ -1,5 +1,7 @@
 {
   "$schema": "https://raw.githubusercontent.com/sketch-hq/SketchAPI/develop/docs/sketch-plugin-manifest-schema.json",
+  "author": "Eduardo Gomez <this.eduardo@gmail.com>",
+  "bundleVersion": 1,
   "icon": "icon.png",
   "commands": [
     {
@@ -27,5 +29,12 @@
       "sketch-dark-mode.create-palette-identifier",
       "sketch-dark-mode.create-dark-mode-identifier"
     ]
-  }
+  },
+  "compatibleVersion": "53",
+  "homepage": "https://sketch-dark-mode.eduardogomez.io",
+  "identifier": "io.eduardogomez.sketch-dark-mode",
+  "appcast": "https://raw.githubusercontent.com/eddiesigner/sketch-dark-mode/master/appcast.xml",
+  "version": "0.1.0",
+  "name": "Sketch Dark Mode",
+  "description": "Generate a dark mode version of any document, the right way"
 }

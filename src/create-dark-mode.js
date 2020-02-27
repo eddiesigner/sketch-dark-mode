@@ -14,6 +14,11 @@ const doc = sketch.getSelectedDocument()
 const documentColors = doc.colors
 const savedDarkThemeColors = Settings.settingForKey(`${doc.id}-dark-theme-colors`)
 
+/**
+ * 
+ * @param {ColorAsset} color 
+ * @returns {ColorAsset}
+ */
 const switchColor = (color) => {
   const foundColor = documentColors.find((documentColor) => {
     return documentColor.color === color
@@ -26,6 +31,11 @@ const switchColor = (color) => {
   return color
 }
 
+/**
+ * 
+ * @param {ColorAsset} documentColor 
+ * @returns {ColorAsset}
+ */
 const getDarkThemeColor = (documentColor) => {
   const foundColor = savedDarkThemeColors.find((darkThemeColor) => {
     return darkThemeColor.name === documentColor.name
@@ -38,14 +48,26 @@ const getDarkThemeColor = (documentColor) => {
   return documentColor.color
 }
 
+/**
+ * 
+ * @param {Artboard} artboard 
+ */
 const switchArtboardTheme = (artboard) => {
   artboard.background.color = switchColor(artboard.background.color)
 }
 
+/**
+ * 
+ * @param {Text} textLayer 
+ */
 const switchTextTheme = (textLayer) => {
   textLayer.style.textColor = switchColor(textLayer.style.textColor)
 }
 
+/**
+ * 
+ * @param {Shape} shapeLayer 
+ */
 const switchShapeTheme = (shapeLayer) => {
   const styleTypes = ['fills', 'borders']
 
@@ -64,6 +86,10 @@ const switchShapeTheme = (shapeLayer) => {
   })
 }
 
+/**
+ * 
+ * @param {SymbolInstance} symbolInstance
+ */
 const switchSymbolInstanceTheme = (symbolInstance) => {
   const group = symbolInstance.detach()
 
@@ -78,6 +104,10 @@ const switchSymbolInstanceTheme = (symbolInstance) => {
   }
 }
 
+/**
+ * 
+ * @param {SymbolMaster} symbolMaster
+ */
 const switchSymbolMasterTheme = (symbolMaster) => {
   if (!hasFindMethodSupport(sketchVersion)) {
     switchNativeLayersBasedOnType(symbolMaster, 'SymbolMaster')
@@ -90,6 +120,11 @@ const switchSymbolMasterTheme = (symbolMaster) => {
   }
 }
 
+/**
+ * 
+ * @param {*} context 
+ * @param {String} type 
+ */
 const switchNativeLayersBasedOnType = (context, type) => {
   const nativeLayers = context.sketchObject.children()
 
@@ -102,6 +137,10 @@ const switchNativeLayersBasedOnType = (context, type) => {
   })
 }
 
+/**
+ * 
+ * @param {Layer} layer 
+ */
 const switchLayerThemeBasedOnType = (layer) => {
   switch (layer.type) {
     case 'Text':
