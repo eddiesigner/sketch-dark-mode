@@ -1,6 +1,7 @@
 {
   "$schema": "https://raw.githubusercontent.com/sketch-hq/SketchAPI/develop/docs/sketch-plugin-manifest-schema.json",
-  "author": "Eduardo Gomez <this.eduardo@gmail.com>",
+  "author": "Eduardo Gomez",
+  "authorEmail": "this.eduardo@gmail.com",
   "bundleVersion": 1,
   "icon": "icon.png",
   "commands": [
