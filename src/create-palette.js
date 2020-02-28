@@ -38,8 +38,7 @@ export default () => {
     hidesOnDeactivate: false,
     remembersWindowFrame: true,
     webPreferences: {
-      devTools: true,
-      plugins: true
+      devTools: true
     }
   }
 
