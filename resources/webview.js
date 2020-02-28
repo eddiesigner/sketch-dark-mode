@@ -2,7 +2,8 @@ import $ from './jquery'
 import {
   isValidColor,
   getRegularHexValue,
-  hasColorsWithoutName
+  hasColorsWithoutName,
+  generateRandomColor
 } from './utils'
 
 const $colorsList = $('.js-colors-list')
@@ -55,6 +56,10 @@ const handleDarkThemeColorsChanges = () => {
 
   $darkThemePickers.on('change input', function() {
     setPreviewColor($(this), true)
+  })
+
+  $darkThemePickers.on('click', function () {
+    $(this).val(generateRandomColor())
   })
 }
 
@@ -148,5 +153,5 @@ document.addEventListener('click', interceptClickEvent)
 
 // disable the context menu (eg. the right click menu) to have a more native feel
 document.addEventListener('contextmenu', (e) => {
-  e.preventDefault()
+  // e.preventDefault()
 })

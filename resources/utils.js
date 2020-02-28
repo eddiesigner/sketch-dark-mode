@@ -16,6 +16,10 @@ export const getRegularHexValue = (value) => {
   return value.slice(0, -2)
 }
 
+export const generateRandomColor = () => {
+  return `#${(Math.random() * 0xFFFFFF << 0).toString(16)}`
+}
+
 /**
  * 
  * @param {Array} documentColors 
