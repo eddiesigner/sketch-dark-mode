@@ -191,18 +191,18 @@ export default () => {
 
   UI.message('⏳ Generating...')
 
-  const duplicatePage = selectedPage.duplicate()
-  duplicatePage.name = `[Dark mode] - ${selectedPage.name}`
+  const duplicatedPage = selectedPage.duplicate()
+  duplicatedPage.name = `[Dark mode] - ${selectedPage.name}`
 
   if (selectedPage.isSymbolsPage()) {
     let symbolMasters = []
 
     if (!hasFindMethodSupport(sketchVersion)) {
-      symbolMasters = duplicatePage.layers.filter((layer) => {
+      symbolMasters = duplicatedPage.layers.filter((layer) => {
         return layer.type === 'SymbolMaster'
       })
     } else {
-      symbolMasters = sketch.find('SymbolMaster', duplicatePage)
+      symbolMasters = sketch.find('SymbolMaster', duplicatedPage)
     }
 
     symbolMasters.forEach((symbolMaster) => {
@@ -212,11 +212,11 @@ export default () => {
     let artboards = []
 
     if (!hasFindMethodSupport(sketchVersion)) {
-      artboards = duplicatePage.layers.filter((layer) => {
+      artboards = duplicatedPage.layers.filter((layer) => {
         return layer.type === 'Artboard'
       })
     } else {
-      artboards = sketch.find('Artboard', duplicatePage)
+      artboards = sketch.find('Artboard', duplicatedPage)
     }
 
     artboards.forEach((artboard) => {
@@ -236,5 +236,6 @@ export default () => {
     }) 
   }
 
+  doc.selectedPage = duplicatedPage
   UI.message('🎉 Dark theme generated!')
 }
