@@ -1,13 +1,14 @@
 /* CSS variables */
 
 :root {
-  --background-color: #eeeeee;
+  --background-color: #f6f6f6;
   --bar-background-color: #ffffff;
   --card-background-color: #f7f8fa;
   --text-color: #121d2e;
   --border-color: #bbbec2;
   --input-color: #333;
   --input-background-color: #d8dce7;
+  --preview-background-color: #7a7a7a;
   --button-background-color: #2253e6;
   --link-color: #121d2e;
 }
@@ -21,6 +22,7 @@
     --border-color: #0a0d1c;
     --input-color: #ececec;
     --input-background-color: #0d1c2f;
+    --preview-background-color: transparent;
     --button-background-color: #2253e6;
     --link-color: #ffffff;
   }
@@ -138,7 +140,7 @@ input, textarea {
 
 .button:active:not(:disabled),
 .button:focus:not(:disabled) {
-  background: #2253e6;
+  background: #1840b8;
 }
 
 .button:disabled {
@@ -245,6 +247,10 @@ input, textarea {
   content: '🌒';
 }
 
+.color-theme-preview.empty {
+  background-color: var(--preview-background-color) !important;
+}
+
 .color-theme-preview.empty:before {
   content: '❔';
   position: absolute;
@@ -252,7 +258,6 @@ input, textarea {
   left: 50%;
   font-size: 14px;
   pointer-events: none;
-  background-color: transparent;
   transform: translate(-50%, -50%);
 }
 
@@ -327,6 +332,12 @@ input, textarea {
   text-decoration: none;
   font-size: 14px;
   cursor: pointer;
+  transition: opacity linear 0.1s;
+}
+
+.donate:active,
+.donate:focus {
+  opacity: 0.5;
 }
 
 .donate span {

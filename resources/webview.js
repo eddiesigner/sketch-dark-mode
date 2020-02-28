@@ -45,9 +45,7 @@ const handleDarkThemeColorsChanges = () => {
           .val(colorValue)
       }
     } else {
-      $colorPreview
-        .addClass('empty')
-        .css('background-color', 'transparent')
+      $colorPreview.addClass('empty')
     }
   }
 
@@ -150,5 +148,5 @@ document.addEventListener('click', interceptClickEvent)
 
 // disable the context menu (eg. the right click menu) to have a more native feel
 document.addEventListener('contextmenu', (e) => {
-  e.preventDefault()
+  // e.preventDefault()
 })

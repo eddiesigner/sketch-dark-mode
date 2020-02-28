@@ -25,6 +25,7 @@ export function onShutdown() {
 export default () => {
   const windowOptions = {
     identifier: webviewIdentifier,
+    parent: doc,
     width: 480,
     minWidth: 480,
     maxWidth: 480,
@@ -37,7 +38,8 @@ export default () => {
     hidesOnDeactivate: false,
     remembersWindowFrame: true,
     webPreferences: {
-      devTools: true
+      devTools: true,
+      plugins: true
     }
   }
 
@@ -59,9 +61,12 @@ export default () => {
   })
 
   webContents.on('saveDarkThemePalette', (darkThemeColors) => {
+    Settings.setSettingForKey(`${doc.id}-dark-theme-colors`, darkThemeColors)
+
     if (darkThemeColors && darkThemeColors.length > 0) {
-      Settings.setSettingForKey(`${doc.id}-dark-theme-colors`, darkThemeColors)
       UI.message('🎉 The color palette has been successfully saved!')
+    } else {
+      UI.message('🙃 Note that you just saved an empty color palette.')
     }
 
     closeWwebView()
