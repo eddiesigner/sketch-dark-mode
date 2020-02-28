@@ -1,6 +1,6 @@
 {
   "$schema": "https://raw.githubusercontent.com/sketch-hq/SketchAPI/develop/docs/sketch-plugin-manifest-schema.json",
-  "author": "Eduardo Gomez",
+  "author": "Eduardo Gómez",
   "authorEmail": "this.eduardo@gmail.com",
   "bundleVersion": 1,
   "icon": "icon.png",
@@ -37,5 +37,5 @@
   "appcast": "https://raw.githubusercontent.com/eddiesigner/sketch-dark-mode/master/appcast.xml",
   "version": "0.1.0",
   "name": "Sketch Dark Mode",
-  "description": "Generate a dark mode version of any document, the right way"
+  "description": "Generate a dark mode version of any document, the right way."
 }
