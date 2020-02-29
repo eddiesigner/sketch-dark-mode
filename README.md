@@ -9,6 +9,10 @@ If you find this plugin useful, please consider to make a donation to support it
 
 <a href="https://www.buymeacoffee.com/eddiesigner" target="_blank"><img src="https://res.cloudinary.com/edev/image/upload/v1583011476/button_y8hgt8.png" alt="Donate" style="width: 250px !important; height: 60px !important;" width="250" height="60"></a>
 
+## Preview
+
+![Sketch Dark Mode Preview](https://res.cloudinary.com/edev/image/upload/v1583016329/sketch-dark-mode/preview.gif)
+
 ## Features
 
 * 🌗 Create a dark mode version of any document with ease
