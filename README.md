@@ -41,9 +41,17 @@ If you find this plugin useful, please consider to make a donation to support it
 
 ## FAQ
 
-* What versions of Sketch are supported? The plugin is compatible with Sketch 53+
-* What format colors are supported? RBG colors are supported
-* Are shadows and gradients supported? No
+**What versions of Sketch are supported?**
+
+The plugin is compatible with Sketch 53+
+
+**What format colors are supported?**
+
+RBG colors are supported
+
+**Are shadows and gradients supported?**
+
+No
 
 ## Issues
 
