@@ -31,7 +31,7 @@ If you find this plugin useful, please consider to make a donation to support it
 <br>
 3) Generate the dark mode version of your page: Plugins > Sketch Dark Mode > Create Dark Mode Page or <kbd>Shift</kbd> + <kbd>Cmd</kbd> + <kbd>D</kbd>
 <br>
-4) Be awesome 😄
+4) Do more important things with the time you saved 😄
 
 ## Installation
 
