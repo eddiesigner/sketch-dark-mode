@@ -27,9 +27,9 @@ If you find this plugin useful, please consider to make a donation to support it
 
 1) [Add presets](https://www.sketch.com/docs/styling/#presets) to your document (don't forget to give them a name)
 
-2) Create a color palette for the dark mode version: Plugins > Sketch Dark Mode > Create Palete... or press <kbd>Shift</kbd> + <kbd>Cmd</kbd> + <kbd>P</kbd>
+2) Create a color palette for the dark mode version: _Plugins_ > _Sketch Dark Mode_ > _Create Palete..._ or press <kbd>Shift</kbd> + <kbd>Cmd</kbd> + <kbd>P</kbd>
 
-3) Generate the dark mode version of your page: Plugins > Sketch Dark Mode > Create Dark Mode Page or press <kbd>Shift</kbd> + <kbd>Cmd</kbd> + <kbd>D</kbd>
+3) Generate the dark mode version of your page: _Plugins_ > _Sketch Dark Mode_ > _Create Dark Mode Page_ or press <kbd>Shift</kbd> + <kbd>Cmd</kbd> + <kbd>D</kbd>
 
 ## Installation
 
