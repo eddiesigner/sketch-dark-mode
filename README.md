@@ -2,8 +2,7 @@
 
 Generate a dark mode version of any document, the right way 💅🏼
 
-Boost your design workflow and create a beautiful dark mode version of your designs in seconds! ⚡️
-No cumbersome interfaces, no tricky workarounds, it just works 🍎
+Boost your design workflow and create a beautiful dark mode version of your designs in seconds! No cumbersome interfaces, no tricky workarounds, it just works 🍎
 
 If you find this plugin useful, please consider to make a donation to support its development! 🙏🏼
 
@@ -17,7 +16,7 @@ If you find this plugin useful, please consider to make a donation to support it
 
 * 🌗 Create a dark mode version of any document with ease
 * 💾 Save your dark mode color presets for every document
-* 💻💻 The color presets are saved across your computers
+* 💻 The color presets are saved across your computers
 * ⚡️ Crazy fast
 * 🙌🏼 Easy to use
 * 🚸 Symbols and shared styles support
@@ -27,17 +26,17 @@ If you find this plugin useful, please consider to make a donation to support it
 ## How it works?
 
 1) [Add presets](https://www.sketch.com/docs/styling/#presets) to your document (don't forget to give them a name)
-<br>
+
 2) Create a color palette for the dark mode version: Plugins > Sketch Dark Mode > Create Palete... or <kbd>Shift</kbd> + <kbd>Cmd</kbd> + <kbd>P</kbd>
-<br>
+
 3) Generate the dark mode version of your page: Plugins > Sketch Dark Mode > Create Dark Mode Page or <kbd>Shift</kbd> + <kbd>Cmd</kbd> + <kbd>D</kbd>
-<br>
+
 4) Do more important things with the time you saved 😄
 
 ## Installation
 
 1) [Download the latest release of the plugin](https://github.com/eddiesigner/sketch-dark-mode/releases/latest/download/sketch-dark-mode.sketchplugin.zip) and unzip the file
-<br>
+
 2) Double click on `sketch-dark-mode.sketchplugin` and you're ready to go
 
 ## FAQ
