@@ -16,7 +16,8 @@ If you find this plugin useful, please consider to make a donation to support it
 ## Features
 
 * 🌗 Create a dark mode version of any document with ease
-* 💾 Save your dark mode color presets for each document
+* 💾 Save your dark mode color presets for every document
+* 💻💻 If you create color presets on one computer and open the same document on another, they will be available to you so you don't have to do the same process again
 * ⚡️ Crazy fast
 * 🙌🏼 Easy to use
 * 🚸 Symbols support

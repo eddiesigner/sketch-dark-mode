@@ -7,7 +7,10 @@ import { getWebview } from 'sketch-module-web-view/remote'
 const webviewIdentifier = 'sketch-dark-mode.webview'
 const doc = sketch.getSelectedDocument()
 const documentColors = doc.colors.length > 0 ? doc.colors : []
-const savedDarkThemeColors = Settings.settingForKey(`${doc.id}-dark-theme-colors`)
+const settingsKey = `${doc.id}-dark-theme-colors`
+const savedDarkThemeColors =
+  Settings.settingForKey(settingsKey) ||
+  Settings.documentSettingForKey(doc, settingsKey)
 
 const closeWwebView = () => {
   const existingWebview = getWebview(webviewIdentifier)
@@ -60,7 +63,8 @@ export default () => {
   })
 
   webContents.on('saveDarkThemePalette', (darkThemeColors) => {
-    Settings.setSettingForKey(`${doc.id}-dark-theme-colors`, darkThemeColors)
+    Settings.setSettingForKey(settingsKey, darkThemeColors)
+    Settings.setDocumentSettingForKey(doc, settingsKey, darkThemeColors)
 
     if (darkThemeColors && darkThemeColors.length > 0) {
       UI.message('🎉 The color palette has been successfully saved!')
