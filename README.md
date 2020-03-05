@@ -1,4 +1,4 @@
-# 🌗 Sketch Dark Mode
+# 🌗 Sketch Dark Mode Plugin
 
 Generate a dark mode version of any document, the right way 💅🏼
 
