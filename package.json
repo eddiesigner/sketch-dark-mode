@@ -3,7 +3,7 @@
   "description": "Generate a dark mode version of any document, the right way.",
   "version": "0.1.0",
   "engines": {
-    "sketch": ">=49.0"
+    "sketch": ">=53.0"
   },
   "skpm": {
     "name": "sketch-dark-mode",
@@ -32,5 +32,10 @@
   "dependencies": {
     "sketch-module-web-view": "^3.4.1"
   },
-  "author": "Eduardo Gómez"
+  "author": "Eduardo Gómez",
+  "homepage": "https://sketch-dark-mode.eduardogomez.io",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/eddiesigner/sketch-dark-mode.git"
+  }
 }
