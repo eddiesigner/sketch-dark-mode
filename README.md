@@ -20,7 +20,7 @@ If you find this plugin useful, please consider to make a donation to support it
 * 💻💻 The color presets are saved across your computers
 * ⚡️ Crazy fast
 * 🙌🏼 Easy to use
-* 🚸 Symbols support
+* 🚸 Symbols and shared styles support
 * 🎨 Enter colors by typing the values or by using the native color picker
 * 😉 Dark mode support
 
