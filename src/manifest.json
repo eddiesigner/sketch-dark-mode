@@ -34,8 +34,6 @@
   "compatibleVersion": "53",
   "homepage": "https://sketch-dark-mode.eduardogomez.io",
   "identifier": "io.eduardogomez.sketch-dark-mode",
-  "appcast": "https://raw.githubusercontent.com/eddiesigner/sketch-dark-mode/master/appcast.xml",
-  "version": "0.1.0",
   "name": "Sketch Dark Mode",
   "description": "Generate a dark mode version of any document, the right way."
 }
