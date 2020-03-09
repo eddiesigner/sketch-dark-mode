@@ -33,9 +33,15 @@ If you find this plugin useful, please consider to make a donation to support it
 
 ## Installation
 
+#### Manual
+
 1) [Download the latest release of the plugin](https://github.com/eddiesigner/sketch-dark-mode/releases/latest/download/sketch-dark-mode.sketchplugin.zip) and unzip the file
 
 2) Double click on `sketch-dark-mode.sketchplugin` and you're ready to go
+
+#### Install with Sketch Runner
+
+Open Sketch Runner and run the `Install` command, then search for `Sketch Dark Mode` and hit the `Get` button.
 
 ## FAQ
 
