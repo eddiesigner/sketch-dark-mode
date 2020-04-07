@@ -60,7 +60,10 @@ export default () => {
     symbolMasters.forEach((symbolMaster) => {
       switchLayerThemeBasedOnType(symbolMaster)
     })
-  } else {
+
+    selectPage(duplicatedPage)
+    UI.message('🎉 Dark theme generated!')
+  } else if (duplicatedPage.layers.length > 0) {
     let artboards = []
 
     if (!hasSketchFindMethodSupport()) {
@@ -71,23 +74,35 @@ export default () => {
       artboards = sketch.find('Artboard', duplicatedPage)
     }
 
-    artboards.forEach((artboard) => {
-      if (artboard.background.enabled) {
-        switchArtboardTheme(artboard)
-      }
+    if (artboards.length > 0) {
+      artboards.forEach((artboard) => {
+        if (artboard.background.enabled) {
+          switchArtboardTheme(artboard)
+        }
 
+        if (!hasSketchFindMethodSupport()) {
+          switchNativeLayersBasedOnType(artboard, 'Artboard')
+        } else {
+          const layers = sketch.find('*', artboard)
+
+          layers.forEach((layer) => {
+            switchLayerThemeBasedOnType(layer)
+          })
+        }
+      })
+    } else {
       if (!hasSketchFindMethodSupport()) {
-        switchNativeLayersBasedOnType(artboard, 'Artboard')
+        switchNativeLayersBasedOnType(duplicatedPage, 'Page')
       } else {
-        const layers = sketch.find('*', artboard)
+        const layers = sketch.find('*', duplicatedPage)
 
         layers.forEach((layer) => {
           switchLayerThemeBasedOnType(layer)
         })
       }
-    }) 
-  }
+    }
 
-  selectPage(duplicatedPage)
-  UI.message('🎉 Dark theme generated!')
+    selectPage(duplicatedPage)
+    UI.message('🎉 Dark theme generated!')
+  }
 }
