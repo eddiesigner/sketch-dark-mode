@@ -19,16 +19,23 @@
     },
     {
       "name": "Create Dark Mode Page",
-      "identifier": "sketch-dark-mode.create-dark-mode-identifier",
-      "script": "./create-dark-mode.js",
+      "identifier": "sketch-dark-mode.create-dark-page-identifier",
+      "script": "./create-dark-page.js",
       "shortcut": "shift cmd d"
+    },
+    {
+      "name": "Create Dark Mode Artboard(s)",
+      "identifier": "sketch-dark-mode.create-dark-artboard-identifier",
+      "script": "./create-dark-artboard.js",
+      "shortcut": "shift cmd b"
     }
   ],
   "menu": {
     "title": "🌓 Sketch Dark Mode",
     "items": [
       "sketch-dark-mode.create-palette-identifier",
-      "sketch-dark-mode.create-dark-mode-identifier"
+      "sketch-dark-mode.create-dark-page-identifier",
+      "sketch-dark-mode.create-dark-artboard-identifier"
     ]
   },
   "compatibleVersion": "53",

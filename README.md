@@ -15,6 +15,7 @@ If you find this plugin useful, please consider to make a donation to support it
 ## Features
 
 * 🌗 Create a dark mode version of any document with ease
+* 🖼 Create a dark mode version of selected artboards
 * 💾 Save your dark mode color presets for every document
 * 💻 The color presets are saved across your computers
 * ⚡️ Crazy fast
@@ -30,6 +31,8 @@ If you find this plugin useful, please consider to make a donation to support it
 2) Create a color palette for the dark mode version: _Plugins_ > _Sketch Dark Mode_ > _Create Palete..._ or press <kbd>Shift</kbd> + <kbd>Cmd</kbd> + <kbd>P</kbd>
 
 3) Generate the dark mode version of your page: _Plugins_ > _Sketch Dark Mode_ > _Create Dark Mode Page_ or press <kbd>Shift</kbd> + <kbd>Cmd</kbd> + <kbd>D</kbd>
+
+You can also generate the dark mode version of selected artboards: _Plugins_ > _Sketch Dark Mode_ > _Create Dark Mode Artboard_ or press <kbd>Shift</kbd> + <kbd>Cmd</kbd> + <kbd>B</kbd>
 
 ## Installation
 
