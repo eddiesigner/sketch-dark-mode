@@ -34,6 +34,10 @@ export const hasSketchFindMethodSupport = () => {
   return false
 }
 
+/**
+ *
+ * @returns {Boolean}
+ */
 export const hasSketchFillTypeSupport = () => {
   if (sketchVersion >= '55') {
     return true
@@ -131,6 +135,7 @@ export const switchLayerThemeBasedOnType = (layer) => {
     case 'Text':
       switchTextTheme(layer)
       break;
+    case 'Group':
     case 'Shape':
     case 'ShapePath':
       switchShapeTheme(layer)
