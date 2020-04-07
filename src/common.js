@@ -15,7 +15,7 @@ const savedDarkThemeColors =
  * @returns {Boolean}
  */
 export const isSketchSupportedVersion = () => {
-  if (sketchVersion >= '53') {
+  if (sketchVersion >= '54') {
     return true
   }
 
@@ -28,6 +28,14 @@ export const isSketchSupportedVersion = () => {
  */
 export const hasSketchFindMethodSupport = () => {
   if (sketchVersion >= '56') {
+    return true
+  }
+
+  return false
+}
+
+export const hasSketchFillTypeSupport = () => {
+  if (sketchVersion >= '55') {
     return true
   }
 
@@ -199,7 +207,9 @@ const switchShapeTheme = (shapeLayer) => {
   styleTypes.forEach((styleType) => {
     if (shapeLayer.style[styleType].length > 0) {
       const newStyle = shapeLayer.style[styleType].map((style) => {
-        if (style.fillType === Style.FillType.Color) {
+        const fillType = hasSketchFillTypeSupport() ? style.fillType : style.fill
+
+        if (fillType === Style.FillType.Color) {
           style.color = switchColor(style.color)
         }
 

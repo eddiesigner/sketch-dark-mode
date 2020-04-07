@@ -50,7 +50,7 @@ Open Sketch Runner and run the `Install` command, then search for `Sketch Dark M
 
 **What versions of Sketch are supported?**
 
-The plugin is compatible with Sketch 53+
+The plugin is compatible with Sketch 54+
 
 **What format colors are supported?**
 
