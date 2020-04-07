@@ -15,7 +15,7 @@ import {
 
 export default () => {
   if (!isSketchSupportedVersion()) {
-    UI.message('⚠️ This plugin only works on Sketch 53 or above.')
+    UI.message('⚠️ This plugin only works on Sketch 54 or above.')
     return
   }
 

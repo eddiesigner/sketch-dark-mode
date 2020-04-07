@@ -3,6 +3,7 @@ import Settings from 'sketch/settings'
 import UI from 'sketch/ui'
 import BrowserWindow from 'sketch-module-web-view'
 import { getWebview } from 'sketch-module-web-view/remote'
+import { isSketchSupportedVersion } from './common'
 
 const webviewIdentifier = 'sketch-dark-mode.webview'
 const doc = sketch.getSelectedDocument()
@@ -26,6 +27,11 @@ export function onShutdown() {
 }
 
 export default () => {
+  if (!isSketchSupportedVersion()) {
+    UI.message('⚠️ This plugin only works on Sketch 54 or above.')
+    return
+  }
+
   const windowOptions = {
     identifier: webviewIdentifier,
     parent: doc,
