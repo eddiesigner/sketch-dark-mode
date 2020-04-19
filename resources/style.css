@@ -277,6 +277,7 @@ input, textarea {
   width: 100%;
   min-width: 0;
   color: var(--input-color);
+  font-family: monospace;
   font-size: 16px;
   padding: 10px 40px 10px 15px;
   border-radius: 5px;
