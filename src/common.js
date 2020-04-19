@@ -176,7 +176,6 @@ const switchColor = (color) => {
   return color
 }
 
-
 /**
  * 
  * @param {ColorAsset} documentColor 

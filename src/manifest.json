@@ -28,6 +28,11 @@
       "identifier": "sketch-dark-mode.create-dark-artboard-identifier",
       "script": "./create-dark-artboard.js",
       "shortcut": "shift cmd b"
+    },
+    {
+      "name": "How to use this plugin...",
+      "identifier": "sketch-dark-mode.how-it-works-identifier",
+      "script": "./how-it-works.js"
     }
   ],
   "menu": {
@@ -35,7 +40,8 @@
     "items": [
       "sketch-dark-mode.create-palette-identifier",
       "sketch-dark-mode.create-dark-page-identifier",
-      "sketch-dark-mode.create-dark-artboard-identifier"
+      "sketch-dark-mode.create-dark-artboard-identifier",
+      "sketch-dark-mode.how-it-works-identifier"
     ]
   },
   "compatibleVersion": "54",
