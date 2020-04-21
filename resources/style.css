@@ -3,6 +3,11 @@
 :root {
   --background-color: #f6f6f6;
   --bar-background-color: #ffffff;
+  --tab-background-color: #d3d3d3;
+  --tab-active-background-color: #e6e6e6;
+  --tab-hover-background-color: #bdbdbd;
+  --tab-text-color: rgb(19, 30, 48, 0.8);
+  --tab-active-text-color: #121d2e;
   --card-background-color: #f7f8fa;
   --text-color: #121d2e;
   --border-color: #bbbec2;
@@ -17,6 +22,11 @@
   :root {
     --background-color: #142541;
     --bar-background-color: #1d304e;
+    --tab-background-color: #101c31;
+    --tab-active-background-color: #13213a;
+    --tab-hover-background-color: #0c1424;
+    --tab-text-color: rgb(255, 255, 255, 0.8);
+    --tab-active-text-color: #ffffff;
     --card-background-color: #1d304e;
     --text-color: #ffffff;
     --border-color: #0a0d1c;
@@ -162,6 +172,65 @@ input, textarea {
 .button.simple:active,
 .button.simple:focus {
   opacity: 0.5;
+}
+
+.tabs {
+  display: flex;
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 30px;
+  z-index: 3;
+}
+
+.tabs:after {
+  content: '';
+  width: 1px;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  margin-left: -1px;
+  opacity: 0.5;
+  background-color: var(--border-color);
+}
+
+.tab {
+  color: var(--tab-text-color);
+  font-weight: 500;
+  font-size: 13px;
+  letter-spacing: 0.2px;
+  vertical-align: middle;
+  -webkit-appearance: none !important;
+  appearance: none !important;
+  padding: 0;
+  border-top: 0;
+  border-left: 0;
+  border-right: 0;
+  border-bottom: 1px solid var(--border-color);
+  outline: 0;
+  width: 50%;
+  height: 100%;
+  background-color: var(--tab-background-color);
+}
+
+.tab.active {
+  color: var(--tab-active-text-color);
+  border-color: var(--button-background-color);
+  background-color: var(--tab-active-background-color);
+}
+
+.tab:hover:not(.active) {
+  background-color: var(--tab-hover-background-color);
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
 }
 
 .colors-list {

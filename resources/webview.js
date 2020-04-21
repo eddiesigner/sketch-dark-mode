@@ -6,10 +6,15 @@ import {
   generateRandomColor
 } from './utils'
 
-const $colorsList = $('.js-colors-list')
-const $errorMessage = $('.js-error-message')
+const $tabs = $('.js-tab')
+const $tabsContent = $('.js-tab-content')
 const $cancelButton = $('.js-cancel-button')
 const $saveButton = $('.js-save-button')
+
+let $currentTab = null
+let $currentTabContent = null
+let $colorsList = null
+let $errorMessage = null
 
 /**
  * 
@@ -24,9 +29,26 @@ const interceptClickEvent = (event) => {
   }
 }
 
+/**
+ * 
+ * @param {Integer} index 
+ */
+const switchTab = (index) => {
+  $currentTab = $tabs.eq(index)
+  $currentTabContent = $tabsContent.eq(index)
+  $colorsList = $currentTabContent.find('.js-colors-list')
+  $errorMessage = $currentTabContent.find('.js-error-message')
+
+  $currentTab.siblings().removeClass('active')
+  $currentTab.addClass('active')
+
+  $currentTabContent.siblings('.js-tab-content').hide()
+  $currentTabContent.show()
+}
+
 const handleDarkThemeColorsChanges = () => {
-  const $darkThemeInputs = $('.js-color-theme-input-dark')
-  const $darkThemePickers = $('.js-color-theme-picker-dark')
+  const $darkThemeInputs = $tabsContent.find('.js-color-theme-input-dark')
+  const $darkThemePickers = $tabsContent.find('.js-color-theme-picker-dark')
 
   const setPreviewColor = ($input, fromPicker = false) => {
     const colorValue = $input.val()
@@ -63,9 +85,11 @@ const handleDarkThemeColorsChanges = () => {
   })
 }
 
-window.createPaletteUI = (documentColors, savedDarkThemeColors) => {
+window.createPaletteUI = (documentColors, savedDarkThemeColors, libraries) => {
+  switchTab(0)
+
   if (documentColors.length > 0 && !hasColorsWithoutName(documentColors)) {
-    const $colorThemePrototype = $('.js-color-theme-prototype')
+    const $colorThemePrototype = $tabsContent.find('.js-color-theme-prototype')
 
     documentColors.forEach((documentColor) => {
       const $colorThemeInstance = $colorThemePrototype
@@ -124,12 +148,18 @@ window.createPaletteUI = (documentColors, savedDarkThemeColors) => {
   }
 }
 
+$tabs.click(function () {
+  if (!$(this).hasClass('active')) {
+    switchTab($(this).index())
+  }
+})
+
 $cancelButton.click(() => {
   window.postMessage('closeWindow')
 })
 
 $saveButton.click(() => {
-  const $colorThemes = $('.js-color-theme')
+  const $colorThemes = $currentTabContent.find('.js-color-theme')
   const darkThemeColors = []
 
   $colorThemes.each(function () {
@@ -153,5 +183,5 @@ document.addEventListener('click', interceptClickEvent)
 
 // disable the context menu (eg. the right click menu) to have a more native feel
 document.addEventListener('contextmenu', (e) => {
-  e.preventDefault()
+  // e.preventDefault()
 })

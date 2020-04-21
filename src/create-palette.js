@@ -12,6 +12,24 @@ const settingsKey = `${doc.id}-dark-theme-colors`
 const savedDarkThemeColors =
   Settings.settingForKey(settingsKey) ||
   Settings.documentSettingForKey(doc, settingsKey)
+const libraries = sketch.getLibraries()
+const mappedLibraries = []
+
+libraries.forEach(library => {
+  try {
+    const libDocument = library.getDocument()
+    mappedLibraries.push({
+      type: library.type,
+      id: library.id,
+      name: library.name,
+      valid: library.valid,
+      enabled: library.enabled,
+      colors: libDocument.colors
+    })
+  } catch (error) {
+    console.log(error)
+  }
+})
 
 const closeWwebView = () => {
   const existingWebview = getWebview(webviewIdentifier)
@@ -84,7 +102,8 @@ export default () => {
   webContents.executeJavaScript(
     `createPaletteUI(
       ${JSON.stringify(documentColors)},
-      ${JSON.stringify(savedDarkThemeColors)}
+      ${JSON.stringify(savedDarkThemeColors)},
+      ${JSON.stringify(mappedLibraries)}
     )`
   )
     .then((res) => {
