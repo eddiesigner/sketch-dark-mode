@@ -1,20 +1,10 @@
-import $ from './jquery'
+import Vue from './vue'
 import {
   isValidColor,
   getRegularHexValue,
   hasColorsWithoutName,
   generateRandomColor
 } from './utils'
-
-const $tabs = $('.js-tab')
-const $tabsContent = $('.js-tab-content')
-const $cancelButton = $('.js-cancel-button')
-const $saveButton = $('.js-save-button')
-
-let $currentTab = null
-let $currentTabContent = null
-let $colorsList = null
-let $errorMessage = null
 
 /**
  * 
@@ -29,154 +19,89 @@ const interceptClickEvent = (event) => {
   }
 }
 
-/**
- * 
- * @param {Integer} index 
- */
-const switchTab = (index) => {
-  $currentTab = $tabs.eq(index)
-  $currentTabContent = $tabsContent.eq(index)
-  $colorsList = $currentTabContent.find('.js-colors-list')
-  $errorMessage = $currentTabContent.find('.js-error-message')
-
-  $currentTab.siblings().removeClass('active')
-  $currentTab.addClass('active')
-
-  $currentTabContent.siblings('.js-tab-content').hide()
-  $currentTabContent.show()
-}
-
-const handleDarkThemeColorsChanges = () => {
-  const $darkThemeInputs = $tabsContent.find('.js-color-theme-input-dark')
-  const $darkThemePickers = $tabsContent.find('.js-color-theme-picker-dark')
-
-  const setPreviewColor = ($input, fromPicker = false) => {
-    const colorValue = $input.val()
-    const $colorPreview = $input
-      .closest('.js-color-theme-body-section')
-      .find('.js-color-theme-preview-dark')
-
-    if (isValidColor(colorValue)) {
-      $colorPreview
-        .removeClass('empty')
-        .css('background-color', colorValue)
-
-      if (fromPicker) {
-        $input
-          .closest('.js-color-theme-fieldset')
-          .find('.js-color-theme-input-dark')
-          .val(colorValue)
-      }
-    } else {
-      $colorPreview.addClass('empty')
-    }
-  }
-
-  $darkThemeInputs.on('change paste keyup', function () {
-    setPreviewColor($(this))
-  })
-
-  $darkThemePickers.on('change input', function() {
-    setPreviewColor($(this), true)
-  })
-
-  $darkThemePickers.on('click', function () {
-    $(this).val(generateRandomColor())
-  })
-}
-
 window.createPaletteUI = (documentColors, savedDarkThemeColors, libraries) => {
-  switchTab(0)
+  app = new Vue({
+    el: '#app',
+    data: {
+      schemeType: 'document',
+      paletteColors: [],
+      savedDarkThemeColors: [],
+      libraries: [],
+      showSettingsMenu: false,
+      appIsReady: false
+    },
+    computed: {
+      isDocumentSchemeSelected() {
+        return this.schemeType === 'document'
+      },
+      paletteColorsHaveErrors() {
+        return
+          this.paletteColors.length === 0 &&
+          hasColorsWithoutName(this.paletteColors)
+      }
+    },
+    mounted() {
+      this.savedDarkThemeColors = savedDarkThemeColors
+      this.libraries = libraries
+      this.paletteColors = this.makePaletteColors(documentColors)
+      this.appIsReady = true
+      console.log(this.paletteColors)
+    },
+    methods: {
+      makePaletteColors(currentColors) {
+        const mappedColors = []
 
-  if (documentColors.length > 0 && !hasColorsWithoutName(documentColors)) {
-    const $colorThemePrototype = $tabsContent.find('.js-color-theme-prototype')
+        currentColors.forEach((currentColor) => {
+          const darkColor = this.savedDarkThemeColors.find((darkThemeColor) => {
+            return darkThemeColor.name === currentColor.name
+          })
 
-    documentColors.forEach((documentColor) => {
-      const $colorThemeInstance = $colorThemePrototype
-        .first()
-        .clone()
-        .appendTo('.js-colors-list')
-        .removeClass('js-color-theme-prototype')
-        .addClass('js-color-theme')
-        .attr('data-name', documentColor.name)
-
-      $colorThemeInstance
-        .find('.js-color-theme-name')
-        .text(documentColor.name)
-
-      const colorValue = getRegularHexValue(documentColor.color)
-
-      $colorThemeInstance
-        .find('.js-color-theme-input-light')
-        .val(colorValue)
-
-      $colorThemeInstance
-        .find('.js-color-theme-preview-light')
-        .css('background-color', colorValue)
-    })
-
-    if (savedDarkThemeColors && savedDarkThemeColors.length > 0) {
-      savedDarkThemeColors.forEach((savedDarkThemeColor) => {
-        const $darkColorTheme = $colorsList.find(
-          `[data-name="${savedDarkThemeColor.name}"]`
-        )
-
-        if ($darkColorTheme.length > 0) {
-          const colorValue = getRegularHexValue(savedDarkThemeColor.color)
-
-          if (isValidColor(colorValue)) {
-            $darkColorTheme
-              .find('.js-color-theme-input-dark')
-              .val(colorValue)
-
-            $darkColorTheme
-              .find('.js-color-theme-preview-dark')
-              .removeClass('empty')
-              .css('background-color', colorValue)
+          if (darkColor) {
+            mappedColors.push({
+              type: currentColor.type,
+              name: currentColor.name,
+              lightColor: getRegularHexValue(currentColor.color),
+              darkColor: getRegularHexValue(darkColor.color),
+              isValidColor: isValidColor(getRegularHexValue(darkColor.color))
+            })
           }
+        })
+
+        return mappedColors
+      },
+      selectScheme(scheme) {
+        this.schemeType = scheme
+      },
+      toggleSettingsMenu() {
+        this.showSettingsMenu = !this.showSettingsMenu
+      },
+      updatePaletteDarkColor(colorName, $event) {
+        const foundColorIndex = this.paletteColors.findIndex((paletteColor) => {
+          return paletteColor.name === colorName
+        })
+
+        if (foundColorIndex !== -1) {
+          const newColor = {
+            ...this.paletteColors[foundColorIndex],
+            darkColor: $event.target.value,
+            isValidColor: isValidColor($event.target.value)
+          }
+
+          Vue.set(this.paletteColors, foundColorIndex, newColor)
         }
-      })
-    }
-
-    $colorThemePrototype.remove()
-    $colorsList.css('opacity', 1)
-    handleDarkThemeColorsChanges()
-  } else {
-    $colorsList.hide()
-    $errorMessage.show()
-    $saveButton.attr('disabled', true)
-  }
-}
-
-$tabs.click(function () {
-  if (!$(this).hasClass('active')) {
-    switchTab($(this).index())
-  }
-})
-
-$cancelButton.click(() => {
-  window.postMessage('closeWindow')
-})
-
-$saveButton.click(() => {
-  const $colorThemes = $currentTabContent.find('.js-color-theme')
-  const darkThemeColors = []
-
-  $colorThemes.each(function () {
-    const colorName = $(this).find('.js-color-theme-name').text()
-    const colorValue = $(this).find('.js-color-theme-input-dark').val()
-
-    if (isValidColor(colorValue)) {
-      darkThemeColors.push({
-        type: 'ColorAsset',
-        name: colorName,
-        color: `${colorValue}ff`
-      })
+      },
+      setInputRandomColorValue($event) {
+        $event.target.value = generateRandomColor()
+      },
+      savePalette() {
+        this.closeWindow()
+      },
+      closeWindow() {
+        window.postMessage('closeWindow')
+      }
     }
   })
-
-  window.postMessage('saveDarkThemePalette', darkThemeColors)
-})
+}
 
 // listen for link click events at the document level
 document.addEventListener('click', interceptClickEvent)

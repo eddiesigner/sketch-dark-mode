@@ -6,60 +6,152 @@
     <link rel="stylesheet" href="./style.css">
   </head>
   <body data-app-region="drag">
-    <div class="wrapper">
+    <div id="app" class="wrapper">
       <div class="header">
         <h1 class="header-title">Sketch Dark Mode Palette</h1>
+        <button
+          class="settings-button"
+          v-on:click="toggleSettingsMenu()"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-settings" width="24" height="24"
+            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="0" y="0" width="24" height="24" stroke="none"></rect>
+            <path
+              d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+            <circle cx="12" cy="12" r="3" />
+          </svg>
+        </button>
+        <div
+          v-cloak
+          v-if="showSettingsMenu"
+          class="settings-menu"
+        >
+          <div
+            class="settings-menu-overlay"
+            v-on:click="toggleSettingsMenu()"
+          >
+          </div>
+          <ul>
+            <li v-on:click="selectScheme('document')">
+              <span>Document colors</span>
+              <span v-if="isDocumentSchemeSelected" class="dot">•</span>
+            </li>
+            <li v-on:click="selectScheme('library')">
+              <span>Library colors</span>
+              <span v-if="!isDocumentSchemeSelected" class="dot">•</span>
+            </li>
+          </ul>
+        </div>
       </div>
       <div class="body">
-        <div class="tabs">
-          <button class="tab active js-tab">Document colors</button>
-          <button class="tab js-tab">Library colors</button>
+        <div
+          v-cloak
+          v-if="paletteColorsHaveErrors"
+          class="error-message"
+        >
+          <h2 class="error-message-title">
+            ⚠️ Ooops!
+          </h2>
+          <p class="error-message-description">
+            You have to create document colors first for the plugin to work. Also make sure that all the document colors have been assigned an unique name.
+          </p>
         </div>
-        <div class="tab-content active js-tab-content">
-          <div class="error-message js-error-message">
-            <h2 class="error-message-title">
-              ⚠️ Ooops!
-            </h2>
-            <p class="error-message-description">
-              You have to create document colors first for the plugin to work. Also make sure that all the document colors have
-              been assigned a name.
-            </p>
-          </div>
-          <div class="colors-list js-colors-list">
-            <div class="color-theme js-color-theme-prototype">
-              <div class="color-theme-header">
-                <h4 class="color-theme-header-title js-color-theme-name"></h4>
-              </div>
-              <div class="color-theme-body">
-                <div class="color-theme-body-section">
-                  <div class="color-theme-preview light js-color-theme-preview-light"></div>
-                  <div class="color-theme-fieldset">
-                    <input type="text" disabled maxlength="7" class="color-theme-input js-color-theme-input-light"
-                      placeholder="Hex color" value="">
-                  </div>
+        <div
+          v-cloak
+          v-if="paletteColors.length > 0"
+          class="colors-list"
+        >
+          <div
+            v-for="(paletteColor, index) in paletteColors"
+            :key="index"
+            class="color-theme"
+          >
+            <div class="color-theme-header">
+              <h4 class="color-theme-header-title">
+                {{ paletteColor.name }}
+              </h4>
+            </div>
+            <div class="color-theme-body">
+              <div class="color-theme-body-section">
+                <div
+                  class="color-theme-preview light"
+                  :style="{
+                    backgroundColor: paletteColor.lightColor
+                  }"
+                >
                 </div>
-                <div class="color-theme-body-section js-color-theme-body-section">
-                  <div class="color-theme-preview dark empty js-color-theme-preview-dark"></div>
-                  <div class="color-theme-fieldset js-color-theme-fieldset">
-                    <input type="text" maxlength="7" class="color-theme-input js-color-theme-input-dark" placeholder="Hex color"
-                      spellcheck="false" value="#">
-                    <div class="color-theme-picker">
-                      <span>🎨</span>
-                      <input type="color" class="js-color-theme-picker-dark" value="">
-                    </div>
+                <div class="color-theme-fieldset">
+                  <input
+                    type="text"
+                    disabled
+                    maxlength="7"
+                    class="color-theme-input"
+                    placeholder="Hex color"
+                    :value="paletteColor.lightColor"
+                  />
+                </div>
+              </div>
+              <div class="color-theme-body-section">
+                <div
+                  :class="[
+                    'color-theme-preview dark',
+                    { empty: !paletteColor.isValidColor }
+                  ]"
+                  :style="{
+                    backgroundColor: paletteColor.darkColor
+                  }"
+                >
+                </div>
+                <div class="color-theme-fieldset">
+                  <input
+                    type="text"
+                    maxlength="7"
+                    class="color-theme-input"
+                    placeholder="Hex color"
+                    spellcheck="false"
+                    :value="paletteColor.darkColor"
+                    v-on:keyup="updatePaletteDarkColor(paletteColor.name, $event)"
+                    v-on:change="updatePaletteDarkColor(paletteColor.name, $event)"
+                    v-on:paste="updatePaletteDarkColor(paletteColor.name, $event)"
+                  />
+                  <div class="color-theme-picker">
+                    <span>🎨</span>
+                    <input
+                      type="color"
+                      value=""
+                      v-on:input="updatePaletteDarkColor(paletteColor.name, $event)"
+                      v-on:change="updatePaletteDarkColor(paletteColor.name, $event)"
+                      v-on:click="setInputRandomColorValue($event)"
+                    >
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div class="tab-content js-tab-content">Tab 2</div>
       </div>
       <div class="footer">
-        <a href="https://www.buymeacoffee.com/eddiesigner" target="_blank" class="donate">Donate <span>🧡</span></a>
+        <a
+          href="https://www.buymeacoffee.com/eddiesigner"
+          target="_blank"
+          class="donate"
+        >
+          Donate <span>🧡</span>
+        </a>
         <div class="buttons-container">
-          <button class="button simple in-footer js-cancel-button">Cancel</button>
-          <button class="button in-footer js-save-button">Save Palette</button>
+          <button
+            class="button simple in-footer"
+            v-on:click="closeWindow()"
+          >
+            Cancel
+          </button>
+          <button
+            :disabled="paletteColorsHaveErrors"
+            class="button in-footer"
+            v-on:click="savePalette()"
+          >
+              Save Palette
+          </button>
         </div>
       </div>
     </div>

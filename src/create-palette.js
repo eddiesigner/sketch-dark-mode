@@ -53,9 +53,9 @@ export default () => {
   const windowOptions = {
     identifier: webviewIdentifier,
     parent: doc,
-    width: 480,
-    minWidth: 480,
-    maxWidth: 480,
+    width: 500,
+    minWidth: 500,
+    maxWidth: 500,
     height: 760,
     minHeight: 480,
     maxHeight: 980,
