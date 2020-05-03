@@ -46,19 +46,39 @@
       <div class="body">
         <div
           v-cloak
-          v-if="paletteColorsHaveErrors"
-          class="error-message"
+          v-if="!isDocumentSchemeSelected && libraries.length > 0"
         >
+          <h4 class="small-heading">Libraries</h4>
+          <div class="select-container">
+            <select v-model="selectedLibraryId" class="select">
+              <option value="">Select a library</option>
+              <option
+                v-for="library in libraries"
+                :value="library.id"
+                :disabled="!library.enabled || !library.valid"
+              >
+                {{ library.name }}
+              </option>
+            </select>
+            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-down" width="24" height="24"
+              viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
+              stroke-linejoin="round">
+              <rect x="0" y="0" width="24" height="24" stroke="none"></rect>
+              <polyline points="6 9 12 15 18 9" />
+            </svg>
+          </div>
+        </div>
+        <div v-cloak v-if="paletteColorsHaveErrors" class="error-message">
           <h2 class="error-message-title">
             ⚠️ Ooops!
           </h2>
           <p class="error-message-description">
-            You have to create document colors first for the plugin to work. Also make sure that all the document colors have been assigned an unique name.
+            {{ errorMessage }}
           </p>
         </div>
         <div
           v-cloak
-          v-if="paletteColors.length > 0"
+          v-if="paletteColors.length > 0 && !paletteColorsHaveErrors"
           class="colors-list"
         >
           <div

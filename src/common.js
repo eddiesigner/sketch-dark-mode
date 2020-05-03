@@ -5,10 +5,10 @@ const sketchVersion = sketch.version.sketch
 const Style = sketch.Style
 const doc = sketch.getSelectedDocument()
 const documentColors = doc.colors
-const settingsKey = `${doc.id}-dark-theme-colors`
+const settingsDarkThemeColorsKey = `${doc.id}-dark-theme-colors`
 const savedDarkThemeColors =
-  Settings.settingForKey(settingsKey) ||
-  Settings.documentSettingForKey(doc, settingsKey)
+  Settings.settingForKey(settingsDarkThemeColorsKey) ||
+  Settings.documentSettingForKey(doc, settingsDarkThemeColorsKey)
 
 /**
  * 

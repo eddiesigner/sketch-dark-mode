@@ -19,7 +19,14 @@ const interceptClickEvent = (event) => {
   }
 }
 
-window.createPaletteUI = (documentColors, savedDarkThemeColors, libraries) => {
+window.createPaletteUI = (
+  savedSchemeType,
+  documentColors,
+  savedDarkThemeColors,
+  libraries,
+  savedLibraryId
+) => {
+  console.log(libraries)
   app = new Vue({
     el: '#app',
     data: {
@@ -27,25 +34,50 @@ window.createPaletteUI = (documentColors, savedDarkThemeColors, libraries) => {
       paletteColors: [],
       savedDarkThemeColors: [],
       libraries: [],
-      showSettingsMenu: false,
-      appIsReady: false
+      selectedLibraryId: '',
+      selectedLibraryColors: [],
+      showSettingsMenu: false
     },
     computed: {
       isDocumentSchemeSelected() {
         return this.schemeType === 'document'
       },
       paletteColorsHaveErrors() {
-        return
-          this.paletteColors.length === 0 &&
-          hasColorsWithoutName(this.paletteColors)
+        return this.paletteColors.length === 0 || hasColorsWithoutName(this.paletteColors)
+      },
+      errorMessage() {
+        if (this.isDocumentSchemeSelected) {
+          return 'You have to create document colors first for the plugin to work. Also make sure that all the document colors have been assigned an unique name.'
+        } else {
+          return 'Make sure the library you selected has document colors. Also make sure that all those colors have been assigned an unique name.'
+        }
+      }
+    },
+    watch: {
+      schemeType() {
+        this.switchPalette()
+      },
+      selectedLibraryId() {
+        if (this.selectedLibraryId) {
+          this.switchPalette()
+        } else {
+          this.paletteColors = []
+        }
       }
     },
     mounted() {
+      if (savedSchemeType != null) {
+        this.schemeType = savedSchemeType
+      }
+
+      if (savedLibraryId != null) {
+        this.selectedLibraryId = savedLibraryId
+      }
+
       this.savedDarkThemeColors = savedDarkThemeColors
       this.libraries = libraries
-      this.paletteColors = this.makePaletteColors(documentColors)
-      this.appIsReady = true
-      console.log(this.paletteColors)
+
+      this.switchPalette()
     },
     methods: {
       makePaletteColors(currentColors) {
@@ -56,18 +88,38 @@ window.createPaletteUI = (documentColors, savedDarkThemeColors, libraries) => {
             return darkThemeColor.name === currentColor.name
           })
 
-          if (darkColor) {
-            mappedColors.push({
-              type: currentColor.type,
-              name: currentColor.name,
-              lightColor: getRegularHexValue(currentColor.color),
-              darkColor: getRegularHexValue(darkColor.color),
-              isValidColor: isValidColor(getRegularHexValue(darkColor.color))
-            })
-          }
+          mappedColors.push({
+            type: currentColor.type,
+            name: currentColor.name,
+            lightColor: getRegularHexValue(currentColor.color),
+            darkColor:
+              darkColor ? getRegularHexValue(darkColor.color) : '#',
+            isValidColor:
+              darkColor ? isValidColor(getRegularHexValue(darkColor.color)) : false
+          })
         })
 
         return mappedColors
+      },
+      switchPalette() {
+        if (this.isDocumentSchemeSelected) {
+          this.paletteColors = this.makePaletteColors(documentColors)
+        } else if (this.selectedLibraryId) {
+          this.paletteColors = this.makePaletteColors(this.getColorsFromLibrary())
+        }
+      },
+      getColorsFromLibrary() {
+        if (this.libraries.length > 0 && this.selectedLibraryId) {
+          const foundLibrary = this.libraries.find((library) => {
+            return library.id === this.selectedLibraryId
+          })
+
+          if (foundLibrary) {
+            return foundLibrary.colors
+          }
+        }
+
+        return []
       },
       selectScheme(scheme) {
         this.schemeType = scheme
@@ -94,7 +146,23 @@ window.createPaletteUI = (documentColors, savedDarkThemeColors, libraries) => {
         $event.target.value = generateRandomColor()
       },
       savePalette() {
-        this.closeWindow()
+        const darkThemeColors = []
+
+        this.paletteColors.forEach((paletteColor) => {
+          if (isValidColor(paletteColor.darkColor)) {
+            darkThemeColors.push({
+              type: paletteColor.type,
+              name: paletteColor.name,
+              color: `${paletteColor.darkColor}ff`
+            })
+          }
+        })
+
+        window.postMessage('saveDarkThemePalette', {
+          schemeType: this.schemeType,
+          selectedLibraryId: this.selectedLibraryId,
+          darkThemeColors
+        })
       },
       closeWindow() {
         window.postMessage('closeWindow')
