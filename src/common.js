@@ -20,10 +20,10 @@ const savedLibraryId =
 const libraries = sketch.getLibraries()
 let baseColors = []
 
-if (!savedSchemeType !== null && savedSchemeType === 'document') {
+if (!savedSchemeType != null && savedSchemeType === 'document') {
   baseColors = documentColors
-} else if (!savedSchemeType !== null && savedSchemeType === 'library') {
-  if (libraries.length > 0 && savedLibraryId) {
+} else if (!savedSchemeType != null && savedSchemeType === 'library') {
+  if (libraries.length > 0 && savedLibraryId != null) {
     const foundLibrary = libraries.find((library) => {
       return library.id === savedLibraryId
     })
@@ -38,8 +38,6 @@ if (!savedSchemeType !== null && savedSchemeType === 'document') {
     }
   }
 }
-
-console.log(baseColors)
 
 /**
  * 
