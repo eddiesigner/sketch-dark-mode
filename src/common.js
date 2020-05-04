@@ -5,10 +5,41 @@ const sketchVersion = sketch.version.sketch
 const Style = sketch.Style
 const doc = sketch.getSelectedDocument()
 const documentColors = doc.colors
+const settingsSchemeTypeKey = `${doc.id}-dark-theme-scheme-type`
 const settingsDarkThemeColorsKey = `${doc.id}-dark-theme-colors`
+const settingsSelectedLibraryKey = `${doc.id}-dark-theme-selected-library`
+const savedSchemeType =
+  Settings.settingForKey(settingsSchemeTypeKey) ||
+  Settings.documentSettingForKey(doc, settingsSchemeTypeKey)
 const savedDarkThemeColors =
   Settings.settingForKey(settingsDarkThemeColorsKey) ||
   Settings.documentSettingForKey(doc, settingsDarkThemeColorsKey)
+const savedLibraryId =
+  Settings.settingForKey(settingsSelectedLibraryKey) ||
+  Settings.documentSettingForKey(doc, settingsSelectedLibraryKey)
+const libraries = sketch.getLibraries()
+let baseColors = []
+
+if (!savedSchemeType !== null && savedSchemeType === 'document') {
+  baseColors = documentColors
+} else if (!savedSchemeType !== null && savedSchemeType === 'library') {
+  if (libraries.length > 0 && savedLibraryId) {
+    const foundLibrary = libraries.find((library) => {
+      return library.id === savedLibraryId
+    })
+
+    if (foundLibrary) {
+      try {
+        const libDocument = foundLibrary.getDocument()
+        baseColors = libDocument.colors
+      } catch (error) {
+        console.log(error)
+      }
+    }
+  }
+}
+
+console.log(baseColors)
 
 /**
  * 
@@ -165,12 +196,14 @@ export const selectPage = (page) => {
  * @returns {ColorAsset}
  */
 const switchColor = (color) => {
-  const foundColor = documentColors.find((documentColor) => {
-    return documentColor.color === color
-  })
+  if (baseColors.length > 0) {
+    const foundColor = baseColors.find((currentColor) => {
+      return currentColor.color === color
+    })
 
-  if (foundColor) {
-    return getDarkThemeColor(foundColor)
+    if (foundColor) {
+      return getDarkThemeColor(foundColor)
+    }
   }
 
   return color
@@ -178,19 +211,19 @@ const switchColor = (color) => {
 
 /**
  * 
- * @param {ColorAsset} documentColor 
+ * @param {ColorAsset} baseColor 
  * @returns {ColorAsset}
  */
-const getDarkThemeColor = (documentColor) => {
+const getDarkThemeColor = (baseColor) => {
   const foundColor = savedDarkThemeColors.find((darkThemeColor) => {
-    return darkThemeColor.name === documentColor.name
+    return darkThemeColor.name === baseColor.name
   })
 
   if (foundColor) {
     return foundColor.color
   }
 
-  return documentColor.color
+  return baseColor.color
 }
 
 /**

@@ -26,7 +26,6 @@ window.createPaletteUI = (
   libraries,
   savedLibraryId
 ) => {
-  console.log(libraries)
   app = new Vue({
     el: '#app',
     data: {
@@ -44,6 +43,17 @@ window.createPaletteUI = (
       },
       paletteColorsHaveErrors() {
         return this.paletteColors.length === 0 || hasColorsWithoutName(this.paletteColors)
+      },
+      showErrorMessage() {
+        if (this.isDocumentSchemeSelected) {
+          return this.paletteColorsHaveErrors
+        }
+
+        return this.selectedLibraryId &&
+          (
+            this.paletteColors.length === 0 ||
+            hasColorsWithoutName(this.paletteColors)
+          )
       },
       errorMessage() {
         if (this.isDocumentSchemeSelected) {
@@ -82,11 +92,16 @@ window.createPaletteUI = (
     methods: {
       makePaletteColors(currentColors) {
         const mappedColors = []
+        console.log(this.savedDarkThemeColors)
 
         currentColors.forEach((currentColor) => {
-          const darkColor = this.savedDarkThemeColors.find((darkThemeColor) => {
-            return darkThemeColor.name === currentColor.name
-          })
+          let darkColor = null
+
+          if (this.savedDarkThemeColors && this.savedDarkThemeColors.length > 0) {
+            darkColor = this.savedDarkThemeColors.find((darkThemeColor) => {
+              return darkThemeColor.name === currentColor.name
+            })
+          }
 
           mappedColors.push({
             type: currentColor.type,
