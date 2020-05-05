@@ -3,8 +3,6 @@ import UI from 'sketch/ui'
 import {
   isSketchSupportedVersion,
   getSelectedLayers,
-  hasDocumentNoColors,
-  hasDocumentColorsWithoutName,
   hasSketchFindMethodSupport,
   isDarkPaletteEmpty,
   switchLayerThemeBasedOnType,
@@ -22,16 +20,6 @@ export default () => {
 
   if (selectedLayers.length === 0) {
     UI.message('⚠️ You have to select at least one layer.')
-    return
-  }
-
-  if (hasDocumentNoColors()) {
-    UI.message('⚠️ You have to create document colors first for the plugin to work.')
-    return false
-  }
-
-  if (hasDocumentColorsWithoutName()) {
-    UI.message('⚠️ Please set a name to all the document colors.')
     return
   }
 

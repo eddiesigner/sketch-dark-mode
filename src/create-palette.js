@@ -8,10 +8,36 @@ import { isSketchSupportedVersion } from './common'
 const webviewIdentifier = 'sketch-dark-mode.webview'
 const doc = sketch.getSelectedDocument()
 const documentColors = doc.colors.length > 0 ? doc.colors : []
-const settingsKey = `${doc.id}-dark-theme-colors`
+const settingsSchemeTypeKey = `${doc.id}-dark-theme-scheme-type`
+const settingsDarkThemeColorsKey = `${doc.id}-dark-theme-colors`
+const settingsSelectedLibraryKey = `${doc.id}-dark-theme-selected-library`
+const savedSchemeType =
+  Settings.settingForKey(settingsSchemeTypeKey) ||
+  Settings.documentSettingForKey(doc, settingsSchemeTypeKey)
 const savedDarkThemeColors =
-  Settings.settingForKey(settingsKey) ||
-  Settings.documentSettingForKey(doc, settingsKey)
+  Settings.settingForKey(settingsDarkThemeColorsKey) ||
+  Settings.documentSettingForKey(doc, settingsDarkThemeColorsKey)
+const savedLibraryId =
+  Settings.settingForKey(settingsSelectedLibraryKey) ||
+  Settings.documentSettingForKey(doc, settingsSelectedLibraryKey)
+const libraries = sketch.getLibraries()
+const mappedLibraries = []
+
+libraries.forEach(library => {
+  try {
+    const libDocument = library.getDocument()
+    mappedLibraries.push({
+      type: library.type,
+      id: library.id,
+      name: library.name,
+      valid: library.valid,
+      enabled: library.enabled,
+      colors: libDocument.colors
+    })
+  } catch (error) {
+    console.log(error)
+  }
+})
 
 const closeWwebView = () => {
   const existingWebview = getWebview(webviewIdentifier)
@@ -35,9 +61,9 @@ export default () => {
   const windowOptions = {
     identifier: webviewIdentifier,
     parent: doc,
-    width: 480,
-    minWidth: 480,
-    maxWidth: 480,
+    width: 500,
+    minWidth: 500,
+    maxWidth: 500,
     height: 760,
     minHeight: 480,
     maxHeight: 980,
@@ -68,11 +94,36 @@ export default () => {
     closeWwebView()
   })
 
-  webContents.on('saveDarkThemePalette', (darkThemeColors) => {
-    Settings.setSettingForKey(settingsKey, darkThemeColors)
-    Settings.setDocumentSettingForKey(doc, settingsKey, darkThemeColors)
+  webContents.on('saveDarkThemePalette', (data) => {
+    Settings.setSettingForKey(
+      settingsSchemeTypeKey,
+      data.schemeType
+    )
+    Settings.setDocumentSettingForKey(
+      doc,
+      settingsSchemeTypeKey,
+      data.schemeType
+    )
+    Settings.setSettingForKey(
+      settingsDarkThemeColorsKey,
+      data.darkThemeColors
+    )
+    Settings.setDocumentSettingForKey(
+      doc,
+      settingsDarkThemeColorsKey,
+      data.darkThemeColors
+    )
+    Settings.setSettingForKey(
+      settingsSelectedLibraryKey,
+      data.selectedLibraryId
+    )
+    Settings.setDocumentSettingForKey(
+      doc,
+      settingsSelectedLibraryKey,
+      data.selectedLibraryId
+    )
 
-    if (darkThemeColors && darkThemeColors.length > 0) {
+    if (data.darkThemeColors && data.darkThemeColors.length > 0) {
       UI.message('🎉 The color palette has been successfully saved!')
     } else {
       UI.message('🙃 Note that you just saved an empty color palette.')
@@ -83,8 +134,11 @@ export default () => {
 
   webContents.executeJavaScript(
     `createPaletteUI(
+      ${JSON.stringify(savedSchemeType)},
       ${JSON.stringify(documentColors)},
-      ${JSON.stringify(savedDarkThemeColors)}
+      ${JSON.stringify(savedDarkThemeColors)},
+      ${JSON.stringify(mappedLibraries)},
+      ${JSON.stringify(savedLibraryId)}
     )`
   )
     .then((res) => {

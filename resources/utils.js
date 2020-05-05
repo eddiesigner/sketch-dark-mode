@@ -22,14 +22,14 @@ export const generateRandomColor = () => {
 
 /**
  * 
- * @param {Array} documentColors 
+ * @param {Array} colors 
  * @returns {Boolean}
  */
-export const hasColorsWithoutName = (documentColors) => {
+export const hasColorsWithoutName = (colors) => {
   let result = false
 
-  for (let i = 0; i < documentColors.length; i++) {
-    if (!documentColors[i].name || documentColors[i].name.length === 0) {
+  for (let i = 0; i < colors.length; i++) {
+    if (!colors[i].name || colors[i].name.length === 0) {
       result = true
       break
     }

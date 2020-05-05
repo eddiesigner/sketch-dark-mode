@@ -2,8 +2,6 @@ import sketch from 'sketch/dom'
 import UI from 'sketch/ui'
 import {
   isSketchSupportedVersion,
-  hasDocumentNoColors,
-  hasDocumentColorsWithoutName,
   hasSketchFindMethodSupport,
   isDarkPaletteEmpty,
   getSelectedPage,
@@ -23,16 +21,6 @@ export default () => {
 
   if (!selectedPage) {
     UI.message('⚠️ Please select a page first.')
-    return
-  }
-
-  if (hasDocumentNoColors()) {
-    UI.message('⚠️ You have to create document colors first for the plugin to work.')
-    return false
-  }
-
-  if (hasDocumentColorsWithoutName()) {
-    UI.message('⚠️ Please set a name to all the document colors.')
     return
   }
 

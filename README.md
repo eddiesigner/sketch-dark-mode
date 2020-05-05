@@ -18,15 +18,16 @@ If you find this plugin useful, please consider to make a donation to support it
 * 🖼 Create a dark mode version of selected artboards
 * 💾 Save your dark mode color presets for every document
 * 💻 The color presets are saved across your computers
+* 📚 Library colors support
+* 🚸 Symbols and shared styles support
 * ⚡️ Crazy fast
 * 🙌🏼 Easy to use
-* 🚸 Symbols and shared styles support
 * 🎨 Enter colors by typing the values or by using the native color picker
 * 😉 Dark mode support
 
 ## How it works?
 
-1) [Add presets](https://www.sketch.com/docs/styling/#presets) to your document (don't forget to give them a name)
+1) [Add presets](https://www.sketch.com/docs/styling/#presets) to your document or to your [Library document](https://www.sketch.com/docs/libraries/#how-to-create-library-presets) (don't forget to give them an unique name).
 
 2) Create a color palette for the dark mode version: _Plugins_ > _Sketch Dark Mode_ > _Create Palette..._ or press <kbd>Shift</kbd> + <kbd>Cmd</kbd> + <kbd>P</kbd>
 
