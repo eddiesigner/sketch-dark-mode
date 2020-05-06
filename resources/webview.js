@@ -44,6 +44,15 @@ window.createPaletteUI = (
       paletteColorsHaveErrors() {
         return this.paletteColors.length === 0 || hasColorsWithoutName(this.paletteColors)
       },
+      showColorList() {
+        if (this.isDocumentSchemeSelected) {
+          return this.paletteColors.length > 0 && !this.paletteColorsHaveErrors
+        }
+
+        return this.selectedLibraryId &&
+          this.paletteColors.length > 0 &&
+          !this.paletteColorsHaveErrors
+      },
       showErrorMessage() {
         if (this.isDocumentSchemeSelected) {
           return this.paletteColorsHaveErrors
