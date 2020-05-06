@@ -2,7 +2,7 @@
 
 Generate a dark mode version of any document, the right way 💅🏼
 
-Boost your design workflow and create a beautiful dark mode version of your designs in seconds! No cumbersome interfaces, no tricky workarounds, it just works 🍎
+Boost your design workflow and create a beautiful dark mode version of your designs in no time! No cumbersome interfaces, no tricky workarounds, it just works 🍎
 
 If you find this plugin useful, please consider to make a donation to support its development! 🙏🏼
 
