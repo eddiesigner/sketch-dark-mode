@@ -10,7 +10,7 @@ If you find this plugin useful, please consider to make a donation to support it
 
 ## Preview
 
-![Sketch Dark Mode Preview](https://res.cloudinary.com/edev/image/upload/v1583016329/sketch-dark-mode/preview.gif)
+![Sketch Dark Mode Preview](https://res.cloudinary.com/edev/image/upload/v1588793725/sketch-dark-mode/preview-gif.gif)
 
 ## Features
 
