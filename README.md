@@ -17,9 +17,9 @@ If you find this plugin useful, please consider to make a donation to support it
 * 🌗 Create a dark mode version of any document with ease
 * 🖼 Create a dark mode version of selected artboards
 * 💾 Save your dark mode color presets for every document
-* 💻 The color presets are saved across your computers
 * 📚 Library colors support
 * 🚸 Symbols and shared styles support
+* 🌈 Gradients support
 * ⚡️ Crazy fast
 * 🙌🏼 Easy to use
 * 🎨 Enter colors by typing the values or by using the native color picker
@@ -57,7 +57,7 @@ The plugin is compatible with Sketch 54+
 
 RBG colors are supported
 
-**Are shadows and gradients supported?**
+**Are shadows supported?**
 
 No
 

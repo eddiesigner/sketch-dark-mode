@@ -248,6 +248,14 @@ const switchShapeTheme = (shapeLayer) => {
           style.color = switchColor(style.color)
         }
 
+        if (fillType === Style.FillType.Gradient) {
+          const stops = style.gradient.stops
+
+          for (let i = 0, l = stops.length; i < l; i++) {
+            stops[i].color = switchColor(stops[i].color)
+          }
+        }
+
         return style
       })
 
