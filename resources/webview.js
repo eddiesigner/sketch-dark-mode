@@ -66,9 +66,9 @@ window.createPaletteUI = (
       },
       errorMessage() {
         if (this.isDocumentSchemeSelected) {
-          return 'You have to create document colors first for the plugin to work. Also make sure that all the document colors have been assigned an unique name.'
+          return 'You have to create document colors first for the plugin to work. Also make sure that all the document colors have been assigned an unique name (default hex values are not allowed).'
         } else {
-          return 'Make sure the library you selected has document colors. Also make sure that all those colors have been assigned an unique name.'
+          return 'Make sure the library you selected has document colors. Also make sure that all those colors have been assigned an unique name (default hex values are not allowed).'
         }
       }
     },
