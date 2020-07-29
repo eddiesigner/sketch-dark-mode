@@ -5,11 +5,34 @@ import {
   hasSketchFindMethodSupport,
   isDarkPaletteEmpty,
   getSelectedPage,
+  getLayersFromElement,
   switchLayerThemeBasedOnType,
   switchArtboardTheme,
   switchNativeLayersBasedOnType,
   selectPage
 } from './common'
+
+const updatePageFlows = (originalFlowData, duplicatedFlowData, layers) => {
+  layers.forEach((layer) => {
+    if (
+      typeof layer.flow !== 'undefined' && !layer.flow.isBackAction()
+    ) {
+      const originalFlowArtboard = originalFlowData.find((artboard) => {
+        return artboard.id === layer.flow.targetId
+      })
+
+      if (originalFlowArtboard) {
+        const newFlowArtboard = duplicatedFlowData.find((artboard) => {
+          return originalFlowArtboard.name === artboard.name
+        })
+
+        if (newFlowArtboard) {
+          layer.flow.targetId = newFlowArtboard.id
+        }
+      }
+    }
+  })
+}
 
 export default () => {
   if (!isSketchSupportedVersion()) {
@@ -33,45 +56,56 @@ export default () => {
 
   const duplicatedPage = selectedPage.duplicate()
   duplicatedPage.name = `[Dark mode] - ${selectedPage.name}`
+  
+  const originalArtboards = getLayersFromElement(selectedPage, 'Artboard')
+  const originalArtboardsInfo = []
+
+  if (originalArtboards.length > 0) {
+    originalArtboards.forEach(artboard => {
+      originalArtboardsInfo.push({
+        id: artboard.id,
+        name: artboard.name
+      })
+    })
+  }
 
   if (selectedPage.isSymbolsPage()) {
-    let symbolMasters = []
+    const symbolMasters = getLayersFromElement(duplicatedPage, 'SymbolMaster')
 
-    if (!hasSketchFindMethodSupport()) {
-      symbolMasters = duplicatedPage.layers.filter((layer) => {
-        return layer.type === 'SymbolMaster'
+    if (symbolMasters.length > 0) {
+      symbolMasters.forEach((symbolMaster) => {
+        switchLayerThemeBasedOnType(symbolMaster)
       })
-    } else {
-      symbolMasters = sketch.find('SymbolMaster', duplicatedPage)
     }
-
-    symbolMasters.forEach((symbolMaster) => {
-      switchLayerThemeBasedOnType(symbolMaster)
-    })
 
     selectPage(duplicatedPage)
     UI.message('🎉 Dark theme generated!')
   } else if (duplicatedPage.layers.length > 0) {
-    let artboards = []
+    const duplicatedArtboards = getLayersFromElement(duplicatedPage, 'Artboard')
 
-    if (!hasSketchFindMethodSupport()) {
-      artboards = duplicatedPage.layers.filter((layer) => {
-        return layer.type === 'Artboard'
+    if (duplicatedArtboards.length > 0) {
+      const duplicatedArtboardsInfo = duplicatedArtboards.map((artboard) => {
+        return {
+          id: artboard.id,
+          name: artboard.name
+        }
       })
-    } else {
-      artboards = sketch.find('Artboard', duplicatedPage)
-    }
 
-    if (artboards.length > 0) {
-      artboards.forEach((artboard) => {
+      duplicatedArtboards.forEach((artboard) => {
         if (artboard.background.enabled) {
           switchArtboardTheme(artboard)
         }
 
+        let layers = []
+
         if (!hasSketchFindMethodSupport()) {
-          switchNativeLayersBasedOnType(artboard, 'Artboard')
+          layers = switchNativeLayersBasedOnType(artboard, 'Artboard')
+
+          updatePageFlows(originalArtboardsInfo, duplicatedArtboardsInfo, layers)
         } else {
-          const layers = sketch.find('*', artboard)
+          layers = sketch.find('*', artboard)
+
+          updatePageFlows(originalArtboardsInfo, duplicatedArtboardsInfo, layers)
 
           layers.forEach((layer) => {
             switchLayerThemeBasedOnType(layer)

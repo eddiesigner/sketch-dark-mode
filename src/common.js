@@ -132,6 +132,25 @@ export const getSelectedLayers = () => {
 
 /**
  * 
+ * @param {Layer} element 
+ * @param {String} layerType 
+ */
+export const getLayersFromElement = (element, layerType) => {
+  let layers = []
+
+  if (!hasSketchFindMethodSupport()) {
+    layers = element.layers.filter((layer) => {
+      return layer.type === layerType
+    })
+  } else {
+    layers = sketch.find(layerType, element)
+  }
+
+  return layers
+}
+
+/**
+ * 
  * @param {Artboard} artboard 
  */
 export const switchArtboardTheme = (artboard) => {
@@ -142,6 +161,7 @@ export const switchArtboardTheme = (artboard) => {
  * 
  * @param {*} context 
  * @param {String} type 
+ * @returns {Array}
  */
 export const switchNativeLayersBasedOnType = (context, type) => {
   const nativeLayers = context.sketchObject.children()
@@ -153,6 +173,8 @@ export const switchNativeLayersBasedOnType = (context, type) => {
       switchLayerThemeBasedOnType(layer)
     }
   })
+
+  return nativeLayers
 }
 
 /**
