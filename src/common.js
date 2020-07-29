@@ -134,6 +134,7 @@ export const getSelectedLayers = () => {
  * 
  * @param {Layer} element 
  * @param {String} layerType 
+ * @returns {Array}
  */
 export const getLayersFromElement = (element, layerType) => {
   let layers = []

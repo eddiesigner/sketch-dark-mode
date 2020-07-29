@@ -12,6 +12,12 @@ import {
   selectPage
 } from './common'
 
+/**
+ * 
+ * @param {Array} originalFlowData 
+ * @param {Array} duplicatedFlowData
+ * @param {Array} layers
+ */
 const updatePageFlows = (originalFlowData, duplicatedFlowData, layers) => {
   layers.forEach((layer) => {
     if (
