@@ -183,6 +183,10 @@ export const switchNativeLayersBasedOnType = (context, type) => {
  * @param {Layer} layer 
  */
 export const switchLayerThemeBasedOnType = (layer) => {
+  if (layer.name.includes('[skip-dark-mode]')) {
+    return
+  }
+
   switch (layer.type) {
     case 'Text':
       switchTextTheme(layer)
