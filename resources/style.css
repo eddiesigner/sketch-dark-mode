@@ -499,6 +499,13 @@ input, textarea {
 .error-message-description {
   line-height: 1.5;
   font-size: 14px;
-  max-width: 95%;
+  max-width: 90%;
+  margin: 0 auto 20px;
+}
+
+.error-message-image {
+  display: block;
+  width: 324px;
+  height: auto;
   margin: 0 auto;
 }

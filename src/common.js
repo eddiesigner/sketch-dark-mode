@@ -132,6 +132,26 @@ export const getSelectedLayers = () => {
 
 /**
  * 
+ * @param {Layer} element 
+ * @param {String} layerType 
+ * @returns {Array}
+ */
+export const getLayersFromElement = (element, layerType) => {
+  let layers = []
+
+  if (!hasSketchFindMethodSupport()) {
+    layers = element.layers.filter((layer) => {
+      return layer.type === layerType
+    })
+  } else {
+    layers = sketch.find(layerType, element)
+  }
+
+  return layers
+}
+
+/**
+ * 
  * @param {Artboard} artboard 
  */
 export const switchArtboardTheme = (artboard) => {
@@ -142,6 +162,7 @@ export const switchArtboardTheme = (artboard) => {
  * 
  * @param {*} context 
  * @param {String} type 
+ * @returns {Array}
  */
 export const switchNativeLayersBasedOnType = (context, type) => {
   const nativeLayers = context.sketchObject.children()
@@ -153,6 +174,8 @@ export const switchNativeLayersBasedOnType = (context, type) => {
       switchLayerThemeBasedOnType(layer)
     }
   })
+
+  return nativeLayers
 }
 
 /**
@@ -160,6 +183,10 @@ export const switchNativeLayersBasedOnType = (context, type) => {
  * @param {Layer} layer 
  */
 export const switchLayerThemeBasedOnType = (layer) => {
+  if (layer.name.includes('[skip-dark-mode]')) {
+    return
+  }
+
   switch (layer.type) {
     case 'Text':
       switchTextTheme(layer)
@@ -246,6 +273,14 @@ const switchShapeTheme = (shapeLayer) => {
 
         if (fillType === Style.FillType.Color) {
           style.color = switchColor(style.color)
+        }
+
+        if (fillType === Style.FillType.Gradient) {
+          const stops = style.gradient.stops
+
+          for (let i = 0, l = stops.length; i < l; i++) {
+            stops[i].color = switchColor(stops[i].color)
+          }
         }
 
         return style
