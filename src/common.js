@@ -1,22 +1,11 @@
 import sketch from 'sketch/dom'
-import Settings from 'sketch/settings'
+import { getDocumentData, isSketchVersion } from './utils'
 
-const sketchVersion = sketch.version.sketch
 const Style = sketch.Style
 const doc = sketch.getSelectedDocument()
 const documentColors = doc.colors
-const settingsSchemeTypeKey = `${doc.id}-dark-theme-scheme-type`
-const settingsDarkThemeColorsKey = `${doc.id}-dark-theme-colors`
-const settingsSelectedLibraryKey = `${doc.id}-dark-theme-selected-library`
-const savedSchemeType =
-  Settings.settingForKey(settingsSchemeTypeKey) ||
-  Settings.documentSettingForKey(doc, settingsSchemeTypeKey)
-const savedDarkThemeColors =
-  Settings.settingForKey(settingsDarkThemeColorsKey) ||
-  Settings.documentSettingForKey(doc, settingsDarkThemeColorsKey)
-const savedLibraryId =
-  Settings.settingForKey(settingsSelectedLibraryKey) ||
-  Settings.documentSettingForKey(doc, settingsSelectedLibraryKey)
+const documentData = getDocumentData(doc)
+const { savedSchemeType, savedDarkThemeColors, savedLibraryId } = documentData
 const libraries = sketch.getLibraries()
 let baseColors = []
 
@@ -44,11 +33,7 @@ if (!savedSchemeType != null && savedSchemeType === 'document') {
  * @returns {Boolean}
  */
 export const isSketchSupportedVersion = () => {
-  if (sketchVersion >= '54') {
-    return true
-  }
-
-  return false
+  return isSketchVersion(sketch, 54)
 }
 
 /**
@@ -56,11 +41,7 @@ export const isSketchSupportedVersion = () => {
  * @returns {Boolean}
  */
 export const hasSketchFindMethodSupport = () => {
-  if (sketchVersion >= '56') {
-    return true
-  }
-
-  return false
+  return isSketchVersion(sketch, 56)
 }
 
 /**
@@ -68,11 +49,15 @@ export const hasSketchFindMethodSupport = () => {
  * @returns {Boolean}
  */
 export const hasSketchFillTypeSupport = () => {
-  if (sketchVersion >= '55') {
-    return true
-  }
+  return isSketchVersion(sketch, 55)
+}
 
-  return false
+/**
+ *
+ * @returns {Boolean}
+ */
+export const hasSketchColorVariablesSupport = () => {
+  return isSketchVersion(sketch, 69)
 }
 
 /**
@@ -183,7 +168,10 @@ export const switchNativeLayersBasedOnType = (context, type) => {
  * @param {Layer} layer 
  */
 export const switchLayerThemeBasedOnType = (layer) => {
-  if (layer.name.includes('[skip-dark-mode]')) {
+  if (
+    layer.name.includes('[skip-dark-mode]') ||
+    layer.parent.name.includes('[skip-dark-mode]')
+  ) {
     return
   }
 
