@@ -1,4 +1,5 @@
 import Settings from 'sketch/settings'
+import sketch from 'sketch/dom'
 
 /**
  * 
@@ -21,7 +22,8 @@ export const getDocumentData = (doc) => {
     Settings.documentSettingForKey(doc, settingsSelectedLibraryKey)
 
   return {
-    savedSchemeType,
+    savedSchemeType:
+      typeof savedSchemeType !== 'undefined' ? savedSchemeType : 'document',
     savedDarkThemeColors,
     savedLibraryId
   }
@@ -29,11 +31,10 @@ export const getDocumentData = (doc) => {
 
 /**
  * 
- * @param {Sketch} sketch 
  * @param {Number} version 
  * @return {Boolean}
  */
-export const isSketchVersion = (sketch, version) => {
+const isSketchVersion = (version) => {
   const sketchVersion = parseFloat(sketch.version.sketch)
 
   if (sketchVersion >= version) {
@@ -41,4 +42,49 @@ export const isSketchVersion = (sketch, version) => {
   }
 
   return false
+}
+
+/**
+ * 
+ * @returns {Boolean}
+ */
+export const isSketchSupportedVersion = () => {
+  return isSketchVersion(54)
+}
+
+/**
+ * 
+ * @returns {Boolean}
+ */
+export const hasSketchFindMethodSupport = () => {
+  return isSketchVersion(56)
+}
+
+/**
+ *
+ * @returns {Boolean}
+ */
+export const hasSketchFillTypeSupport = () => {
+  return isSketchVersion(55)
+}
+
+/**
+ *
+ * @returns {Boolean}
+ */
+export const hasSketchColorVariablesSupport = () => {
+  return isSketchVersion(69)
+}
+
+/**
+ * 
+ * @param {Document} doc 
+ * @return {Array}
+ */
+export const getDocumentColors = (doc) => {
+  if (hasSketchColorVariablesSupport() && doc.colors.length === 0) {
+    return doc.swatches
+  }
+
+  return doc.colors
 }

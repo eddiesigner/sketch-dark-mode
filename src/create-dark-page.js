@@ -1,8 +1,6 @@
 import sketch from 'sketch/dom'
 import UI from 'sketch/ui'
 import {
-  isSketchSupportedVersion,
-  hasSketchFindMethodSupport,
   isDarkPaletteEmpty,
   getSelectedPage,
   getLayersFromElement,
@@ -11,6 +9,10 @@ import {
   switchNativeLayersBasedOnType,
   selectPage
 } from './common'
+import {
+  isSketchSupportedVersion,
+  hasSketchFindMethodSupport
+} from './utils'
 
 /**
  * 
