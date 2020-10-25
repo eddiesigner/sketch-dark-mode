@@ -6,7 +6,7 @@
   "icon": "icon.png",
   "commands": [
     {
-      "name": "Create Palette...",
+      "name": "Manage Palette...",
       "identifier": "sketch-dark-mode.create-palette-identifier",
       "script": "./create-palette.js",
       "shortcut": "shift cmd p",
@@ -18,19 +18,19 @@
       }
     },
     {
-      "name": "Create Dark Mode Page",
+      "name": "Generate Dark Mode for Selected Page",
       "identifier": "sketch-dark-mode.create-dark-page-identifier",
       "script": "./create-dark-page.js",
       "shortcut": "shift cmd d"
     },
     {
-      "name": "Create Dark Mode Artboard(s)",
+      "name": "Generate Dark Mode for Selected Artboards",
       "identifier": "sketch-dark-mode.create-dark-artboard-identifier",
       "script": "./create-dark-artboard.js",
       "shortcut": "shift cmd b"
     },
     {
-      "name": "How to use this plugin...",
+      "name": "How to Use this Plugin...",
       "identifier": "sketch-dark-mode.how-it-works-identifier",
       "script": "./how-it-works.js"
     }

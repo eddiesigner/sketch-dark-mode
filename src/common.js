@@ -84,7 +84,7 @@ export const getLayersFromElement = (element, layerType) => {
  * @param {Artboard} artboard 
  */
 export const switchArtboardTheme = (artboard) => {
-  if (artboard.name.includes('skip-dark-mode')) {
+  if (artboard.name.includes('[skip-dark-mode]')) {
     return
   }
 

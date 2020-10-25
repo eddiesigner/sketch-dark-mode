@@ -65,11 +65,9 @@ window.createPaletteUI = (
           )
       },
       errorMessage() {
-        if (this.isDocumentSchemeSelected) {
-          return 'You have to create document colors first for the plugin to work. Also make sure that all the document colors have been assigned an unique name (default hex values are not allowed).'
-        } else {
-          return 'Make sure the library you selected has document colors. Also make sure that all those colors have been assigned an unique name (default hex values are not allowed).'
-        }
+        const fileTye = this.isDocumentSchemeSelected ? 'document' : 'library'
+
+        return `Please be sure to create Color Variables for your ${fileTye} in Sketch first (or Color Presets if you\'re not running Sketch 69 or above).<br><br>Also make sure that all colors are assigned a unique name (default hex color names are not supported) and that your layers use those colors.`
       }
     },
     watch: {
