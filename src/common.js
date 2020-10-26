@@ -1,22 +1,16 @@
 import sketch from 'sketch/dom'
-import Settings from 'sketch/settings'
+import {
+  getDocumentData,
+  hasSketchFindMethodSupport,
+  hasSketchFillTypeSupport,
+  getDocumentColors
+} from './utils'
 
-const sketchVersion = sketch.version.sketch
 const Style = sketch.Style
 const doc = sketch.getSelectedDocument()
-const documentColors = doc.colors
-const settingsSchemeTypeKey = `${doc.id}-dark-theme-scheme-type`
-const settingsDarkThemeColorsKey = `${doc.id}-dark-theme-colors`
-const settingsSelectedLibraryKey = `${doc.id}-dark-theme-selected-library`
-const savedSchemeType =
-  Settings.settingForKey(settingsSchemeTypeKey) ||
-  Settings.documentSettingForKey(doc, settingsSchemeTypeKey)
-const savedDarkThemeColors =
-  Settings.settingForKey(settingsDarkThemeColorsKey) ||
-  Settings.documentSettingForKey(doc, settingsDarkThemeColorsKey)
-const savedLibraryId =
-  Settings.settingForKey(settingsSelectedLibraryKey) ||
-  Settings.documentSettingForKey(doc, settingsSelectedLibraryKey)
+const documentColors = getDocumentColors(doc)
+const documentData = getDocumentData(doc)
+const { savedSchemeType, savedDarkThemeColors, savedLibraryId } = documentData
 const libraries = sketch.getLibraries()
 let baseColors = []
 
@@ -31,77 +25,12 @@ if (!savedSchemeType != null && savedSchemeType === 'document') {
     if (foundLibrary) {
       try {
         const libDocument = foundLibrary.getDocument()
-        baseColors = libDocument.colors
+        baseColors = getDocumentColors(libDocument)
       } catch (error) {
         console.log(error)
       }
     }
   }
-}
-
-/**
- * 
- * @returns {Boolean}
- */
-export const isSketchSupportedVersion = () => {
-  if (sketchVersion >= '54') {
-    return true
-  }
-
-  return false
-}
-
-/**
- * 
- * @returns {Boolean}
- */
-export const hasSketchFindMethodSupport = () => {
-  if (sketchVersion >= '56') {
-    return true
-  }
-
-  return false
-}
-
-/**
- *
- * @returns {Boolean}
- */
-export const hasSketchFillTypeSupport = () => {
-  if (sketchVersion >= '55') {
-    return true
-  }
-
-  return false
-}
-
-/**
- * 
- * @returns {Boolean}
- */
-export const hasDocumentNoColors = () => {
-  if (doc.colors.length === 0) {
-    return true
-  }
-
-  return false
-}
-
-/**
- * 
- * @returns {Boolean}
- */
-export const hasDocumentColorsWithoutName = () => {
-  let result = false
-
-  for (let i = 0; i < documentColors.length; i++) {
-    if (!documentColors[i].name || documentColors[i].name.length === 0) {
-      result = true
-      break
-    }
-  }
-
-  return result
 }
 
 /**
@@ -155,6 +84,10 @@ export const getLayersFromElement = (element, layerType) => {
  * @param {Artboard} artboard 
  */
 export const switchArtboardTheme = (artboard) => {
+  if (artboard.name.includes('[skip-dark-mode]')) {
+    return
+  }
+
   artboard.background.color = switchColor(artboard.background.color)
 }
 
@@ -183,7 +116,10 @@ export const switchNativeLayersBasedOnType = (context, type) => {
  * @param {Layer} layer 
  */
 export const switchLayerThemeBasedOnType = (layer) => {
-  if (layer.name.includes('[skip-dark-mode]')) {
+  if (
+    layer.name.includes('[skip-dark-mode]') ||
+    layer.parent.name.includes('[skip-dark-mode]')
+  ) {
     return
   }
 
@@ -217,8 +153,8 @@ export const selectPage = (page) => {
 
 /**
  * 
- * @param {ColorAsset} color 
- * @returns {ColorAsset}
+ * @param {Color} color 
+ * @returns {Color}
  */
 const switchColor = (color) => {
   if (baseColors.length > 0) {
@@ -236,8 +172,8 @@ const switchColor = (color) => {
 
 /**
  * 
- * @param {ColorAsset} baseColor 
- * @returns {ColorAsset}
+ * @param {Color} baseColor 
+ * @returns {Color}
  */
 const getDarkThemeColor = (baseColor) => {
   const foundColor = savedDarkThemeColors.find((darkThemeColor) => {

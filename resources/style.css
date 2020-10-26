@@ -491,9 +491,9 @@ input, textarea {
 }
 
 .error-message-title {
-  font-size: 18px;
+  font-size: 22px;
   font-weight: 500;
-  margin: 0 0 20px;
+  margin: 0 0 25px;
 }
 
 .error-message-description {
@@ -501,6 +501,7 @@ input, textarea {
   font-size: 14px;
   max-width: 90%;
   margin: 0 auto 20px;
+  opacity: 0.8;
 }
 
 .error-message-image {

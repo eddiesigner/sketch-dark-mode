@@ -70,11 +70,9 @@
         </div>
         <div v-cloak v-if="showErrorMessage" class="error-message">
           <h2 class="error-message-title">
-            ⚠️ Ooops!
+            🙈 Oops!
           </h2>
-          <p class="error-message-description">
-            {{ errorMessage }}
-          </p>
+          <p class="error-message-description" v-html="errorMessage"></p>
           <img
             src="https://res.cloudinary.com/edev/image/upload/v1595974600/sketch-dark-mode/color-assets.png"
             alt=""

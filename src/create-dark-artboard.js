@@ -1,14 +1,16 @@
 import sketch from 'sketch/dom'
 import UI from 'sketch/ui'
 import {
-  isSketchSupportedVersion,
   getSelectedLayers,
-  hasSketchFindMethodSupport,
   isDarkPaletteEmpty,
   switchLayerThemeBasedOnType,
   switchArtboardTheme,
   switchNativeLayersBasedOnType
 } from './common'
+import {
+  isSketchSupportedVersion,
+  hasSketchFindMethodSupport
+} from './utils'
 
 export default () => {
   if (!isSketchSupportedVersion()) {

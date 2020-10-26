@@ -3,23 +3,17 @@ import Settings from 'sketch/settings'
 import UI from 'sketch/ui'
 import BrowserWindow from 'sketch-module-web-view'
 import { getWebview } from 'sketch-module-web-view/remote'
-import { isSketchSupportedVersion } from './common'
+import {
+  getDocumentData,
+  isSketchSupportedVersion,
+  getDocumentColors
+} from './utils'
 
 const webviewIdentifier = 'sketch-dark-mode.webview'
 const doc = sketch.getSelectedDocument()
-const documentColors = doc.colors.length > 0 ? doc.colors : []
-const settingsSchemeTypeKey = `${doc.id}-dark-theme-scheme-type`
-const settingsDarkThemeColorsKey = `${doc.id}-dark-theme-colors`
-const settingsSelectedLibraryKey = `${doc.id}-dark-theme-selected-library`
-const savedSchemeType =
-  Settings.settingForKey(settingsSchemeTypeKey) ||
-  Settings.documentSettingForKey(doc, settingsSchemeTypeKey)
-const savedDarkThemeColors =
-  Settings.settingForKey(settingsDarkThemeColorsKey) ||
-  Settings.documentSettingForKey(doc, settingsDarkThemeColorsKey)
-const savedLibraryId =
-  Settings.settingForKey(settingsSelectedLibraryKey) ||
-  Settings.documentSettingForKey(doc, settingsSelectedLibraryKey)
+const documentColors = getDocumentColors(doc)
+const documentData = getDocumentData(doc)
+const { savedSchemeType, savedDarkThemeColors, savedLibraryId } = documentData
 const libraries = sketch.getLibraries()
 const mappedLibraries = []
 
@@ -32,7 +26,7 @@ libraries.forEach(library => {
       name: library.name,
       valid: library.valid,
       enabled: library.enabled,
-      colors: libDocument.colors
+      colors: getDocumentColors(libDocument)
     })
   } catch (error) {
     console.log(error)
@@ -96,30 +90,30 @@ export default () => {
 
   webContents.on('saveDarkThemePalette', (data) => {
     Settings.setSettingForKey(
-      settingsSchemeTypeKey,
+      `${doc.id}-dark-theme-scheme-type`,
       data.schemeType
     )
     Settings.setDocumentSettingForKey(
       doc,
-      settingsSchemeTypeKey,
+      `${doc.id}-dark-theme-scheme-type`,
       data.schemeType
     )
     Settings.setSettingForKey(
-      settingsDarkThemeColorsKey,
+      `${doc.id}-dark-theme-colors`,
       data.darkThemeColors
     )
     Settings.setDocumentSettingForKey(
       doc,
-      settingsDarkThemeColorsKey,
+      `${doc.id}-dark-theme-colors`,
       data.darkThemeColors
     )
     Settings.setSettingForKey(
-      settingsSelectedLibraryKey,
+      `${doc.id}-dark-theme-selected-library`,
       data.selectedLibraryId
     )
     Settings.setDocumentSettingForKey(
       doc,
-      settingsSelectedLibraryKey,
+      `${doc.id}-dark-theme-selected-library`,
       data.selectedLibraryId
     )
 
