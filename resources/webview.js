@@ -144,6 +144,7 @@ window.createPaletteUI = (
       },
       selectScheme(scheme) {
         this.schemeType = scheme
+        this.toggleSettingsMenu()
       },
       toggleSettingsMenu() {
         this.showSettingsMenu = !this.showSettingsMenu

@@ -486,7 +486,7 @@ input, textarea {
 .error-message {
   color: var(--text-color);
   text-align: center;
-  padding: 100px 50px;
+  padding: 50px 50px;
   margin: 0 auto;
 }
 

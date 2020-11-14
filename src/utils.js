@@ -82,9 +82,25 @@ export const hasSketchColorVariablesSupport = () => {
  * @return {Array}
  */
 export const getDocumentColors = (doc) => {
-  if (hasSketchColorVariablesSupport() && doc.colors.length === 0) {
+  const legacyColors = doc.colors
+
+  if (hasSketchColorVariablesSupport() && doc.swatches.length > 0) {
+    // Renames Color Variables based on legacy colors
+    if (legacyColors.length > 0) {
+      doc.swatches.forEach((swatch) => {
+        const swatchColorName = swatch.name.substr(3)
+        const foundLegacyColor = legacyColors.find((legacyColor) => {
+          return swatchColorName === legacyColor.name
+        })
+
+        if (foundLegacyColor) {
+          swatch.name = foundLegacyColor.name
+        }
+      })
+    }
+
     return doc.swatches
   }
 
-  return doc.colors
+  return legacyColors
 }
