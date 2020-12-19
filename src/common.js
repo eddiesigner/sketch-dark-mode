@@ -130,6 +130,7 @@ export const switchLayerThemeBasedOnType = (layer) => {
     case 'Group':
     case 'Shape':
     case 'ShapePath':
+    case 'Image':
       switchShapeTheme(layer)
       break;
     case 'SymbolInstance':

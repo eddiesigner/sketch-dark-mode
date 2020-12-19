@@ -67,7 +67,7 @@ window.createPaletteUI = (
       errorMessage() {
         const fileTye = this.isDocumentSchemeSelected ? 'document' : 'library'
 
-        return `Please be sure to create Color Variables for your ${fileTye} in Sketch first (or Color Presets if you\'re not running Sketch 69 or above).<br><br>Also make sure that all colors are assigned a unique name (default hex color names are not supported) and that your layers use those colors.`
+        return `1. Please be sure to create Color Variables for your ${fileTye} in Sketch first (or Color Presets if you\'re not running Sketch 69 or above).<br><br>2. Also make sure that all colors are assigned a unique name (default hex color names are not supported) and that your layers use those colors.<br><br>3. If your colors are defined in a Library, make sure you select it by switching to library mode from the gear button at the top.`
       }
     },
     watch: {
