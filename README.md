@@ -20,6 +20,7 @@ If you find this plugin useful, please consider to make a donation to support it
 * 🎨 Color Variables support
 * 📚 Library colors support
 * 🚸 Symbols and shared styles support
+* 🪟 Transparency support
 * 💅🏼 Tint support
 * 🌈 Gradients support
 * ⚡️ Crazy fast
@@ -45,13 +46,13 @@ Use those colors in the layers of your document.
 
 **Step 3**
 
-Create a color palette for the dark mode version: _Plugins_ > _Sketch Dark Mode_ > _Manage Palette..._ or press <kbd>Shift</kbd> + <kbd>Cmd</kbd> + <kbd>P</kbd>
+Create a color palette for the dark mode version: _Plugins_ > _Sketch Dark Mode_ > _Manage Palette..._ or press <kbd>^</kbd> + <kbd>Cmd</kbd> + <kbd>P</kbd>
 
 **Step 4**
 
-Generate the dark mode version of your selected page: _Plugins_ > _Sketch Dark Mode_ > _Generate Dark Mode for Selected Page_ or press <kbd>Shift</kbd> + <kbd>Cmd</kbd> + <kbd>D</kbd>
+Generate the dark mode version of your selected page: _Plugins_ > _Sketch Dark Mode_ > _Generate Dark Mode for Selected Page_ or press <kbd>^</kbd> + <kbd>Cmd</kbd> + <kbd>D</kbd>
 
-You can also generate the dark mode version of selected artboards: _Plugins_ > _Sketch Dark Mode_ > _Generate Dark Mode for Selected Artboards_ or press <kbd>Shift</kbd> + <kbd>Cmd</kbd> + <kbd>B</kbd>
+You can also generate the dark mode version of selected artboards: _Plugins_ > _Sketch Dark Mode_ > _Generate Dark Mode for Selected Artboards_ or press <kbd>^</kbd> + <kbd>Cmd</kbd> + <kbd>B</kbd>
 
 ## Installation
 
@@ -73,7 +74,7 @@ The plugin is compatible with Sketch 54+
 
 **What format colors are supported?**
 
-RBG colors are supported
+RGB and RBGA colors are supported
 
 **Are shadows supported?**
 

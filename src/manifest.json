@@ -9,7 +9,7 @@
       "name": "Manage Palette...",
       "identifier": "sketch-dark-mode.create-palette-identifier",
       "script": "./create-palette.js",
-      "shortcut": "shift cmd p",
+      "shortcut": "control cmd p",
       "handlers": {
         "run": "onRun",
         "actions": {
@@ -21,13 +21,13 @@
       "name": "Generate Dark Mode for Selected Page",
       "identifier": "sketch-dark-mode.create-dark-page-identifier",
       "script": "./create-dark-page.js",
-      "shortcut": "shift cmd d"
+      "shortcut": "control cmd d"
     },
     {
       "name": "Generate Dark Mode for Selected Artboards",
       "identifier": "sketch-dark-mode.create-dark-artboard-identifier",
       "script": "./create-dark-artboard.js",
-      "shortcut": "shift cmd b"
+      "shortcut": "control cmd b"
     },
     {
       "name": "How to Use this Plugin...",

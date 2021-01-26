@@ -1,23 +1,41 @@
+import chroma from './lib/chroma'
+
 /**
  * 
- * @param {String} value 
- * @returns {Boolean}
+ * @param {String} color 
+ * @returns {Float}
  */
-export const isValidColor = (value) => {
-  return /^#[0-9A-F]{6}$/i.test(value)
+export const getAlphaValue = (color) => {
+  return chroma(color).alpha()
 }
 
 /**
  * 
- * @param {String} value 
+ * @param {String} color 
+ * @param {Float} alpha 
  * @returns {String}
  */
-export const getRegularHexValue = (value) => {
-  return value.slice(0, -2)
+export const setAlphaValue = (color, alpha) => {
+  return chroma(color).alpha(alpha).hex()
 }
 
-export const generateRandomColor = () => {
-  return `#${(Math.random() * 0xFFFFFF << 0).toString(16)}`
+/**
+ * 
+ * @param {String} color 
+ * @returns {Boolean}
+ */
+export const isValidColor = (color) => {
+  return chroma.valid(color)
+}
+
+/**
+ * 
+ * @param {String} value 
+ * @param {Number} end 
+ * @returns {String}
+ */
+export const getRegularHexValue = (value, end = -2) => {
+  return value.slice(0, end)
 }
 
 /**

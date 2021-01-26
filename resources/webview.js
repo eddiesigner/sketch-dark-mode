@@ -1,10 +1,14 @@
-import Vue from './vue'
+import Vue from './lib/vue'
+import Verte from './lib/verte'
 import {
+  getAlphaValue,
+  setAlphaValue,
   isValidColor,
   getRegularHexValue,
-  hasColorsWithoutName,
-  generateRandomColor
+  hasColorsWithoutName
 } from './utils'
+
+Vue.component(Verte.name, Verte)
 
 /**
  * 
@@ -28,6 +32,9 @@ window.createPaletteUI = (
 ) => {
   app = new Vue({
     el: '#app',
+    components: {
+      verte: Verte,
+    },
     data: {
       schemeType: 'document',
       paletteColors: [],
@@ -112,15 +119,28 @@ window.createPaletteUI = (
           mappedColors.push({
             type: currentColor.type,
             name: currentColor.name,
+            lightRawColor: currentColor.color,
             lightColor: getRegularHexValue(currentColor.color),
+            lightAlpha: getAlphaValue(currentColor.color),
+            darkRawColor: darkColor ? darkColor.color : '#',
             darkColor:
               darkColor ? getRegularHexValue(darkColor.color) : '#',
+            darkAlpha: darkColor ? getAlphaValue(darkColor.color) : 1,
             isValidColor:
               darkColor ? isValidColor(getRegularHexValue(darkColor.color)) : false
           })
         })
 
-        return mappedColors
+        return this.orderColorsByName(mappedColors)
+      },
+      orderColorsByName(colors) {
+        if (colors.length > 0) {
+          return colors.sort(function (a, b) {
+            return a.name.localeCompare(b.name)
+          })
+        }
+
+        return []
       },
       switchPalette() {
         if (this.isDocumentSchemeSelected) {
@@ -149,23 +169,61 @@ window.createPaletteUI = (
       toggleSettingsMenu() {
         this.showSettingsMenu = !this.showSettingsMenu
       },
-      updatePaletteDarkColor(colorName, $event) {
+      updatePaletteDarkColor(colorName, $event, fromColorPicker = false) {
         const foundColorIndex = this.paletteColors.findIndex((paletteColor) => {
           return paletteColor.name === colorName
         })
 
         if (foundColorIndex !== -1) {
+          let hexValue = ''
+          const foundColor = this.paletteColors[foundColorIndex]
+
+          if (fromColorPicker) {
+            const colorParts = $event.split('.')
+
+            if (colorParts[0].length > 8) {
+              hexValue = getRegularHexValue(colorParts[0])
+            } else if (colorParts[0].length > 7) {
+              hexValue = getRegularHexValue(colorParts[0], -1)
+            } else {
+              hexValue = colorParts[0]
+            }
+
+            if (foundColor.darkColor === hexValue) {
+              return
+            }
+          } else {
+            hexValue = $event.target.value
+          }
+
+          if (hexValue.length === 7 && isValidColor(hexValue)) {
+            const newColor = {
+              ...foundColor,
+              darkRawColor: setAlphaValue(hexValue, foundColor.darkAlpha),
+              darkColor: hexValue,
+              isValidColor: isValidColor(hexValue)
+            }
+
+            Vue.set(this.paletteColors, foundColorIndex, newColor)
+          }
+        }
+      },
+      updatePaletteDarkAlpha(colorName, $event) {
+        const foundColorIndex = this.paletteColors.findIndex((paletteColor) => {
+          return paletteColor.name === colorName
+        })
+
+        if (foundColorIndex !== -1) {
+          const foundColor = this.paletteColors[foundColorIndex]
+          const alphaValue = parseInt($event.target.value) / 100
           const newColor = {
-            ...this.paletteColors[foundColorIndex],
-            darkColor: $event.target.value,
-            isValidColor: isValidColor($event.target.value)
+            ...foundColor,
+            darkRawColor: setAlphaValue(foundColor.darkColor, alphaValue),
+            darkAlpha: alphaValue,
           }
 
           Vue.set(this.paletteColors, foundColorIndex, newColor)
         }
-      },
-      setInputRandomColorValue($event) {
-        $event.target.value = generateRandomColor()
       },
       savePalette() {
         const darkThemeColors = []
@@ -175,7 +233,7 @@ window.createPaletteUI = (
             darkThemeColors.push({
               type: paletteColor.type,
               name: paletteColor.name,
-              color: `${paletteColor.darkColor}ff`
+              color: paletteColor.darkRawColor
             })
           }
         })

@@ -5,16 +5,26 @@
     <title>Sketch Dark Mode Palette</title>
     <link rel="stylesheet" href="./style.css">
   </head>
-  <body data-app-region="drag">
+  <body>
     <div id="app" class="wrapper">
-      <div class="header">
+      <div class="header" data-app-region="drag">
         <h1 class="header-title">Sketch Dark Mode Palette</h1>
         <button
           class="settings-button"
           v-on:click="toggleSettingsMenu()"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-settings" width="24" height="24"
-            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="icon icon-tabler icon-tabler-settings"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            stroke-width="2"
+            stroke="currentColor"
+            fill="none"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
             <rect x="0" y="0" width="24" height="24" stroke="none"></rect>
             <path
               d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
@@ -43,7 +53,7 @@
           </ul>
         </div>
       </div>
-      <div class="body">
+      <div class="body" data-app-region="no-drag">
         <div
           v-cloak
           v-if="!isDocumentSchemeSelected && libraries.length > 0"
@@ -60,9 +70,18 @@
                 {{ library.name }}
               </option>
             </select>
-            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-chevron-down" width="24" height="24"
-              viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round"
-              stroke-linejoin="round">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="icon icon-tabler icon-tabler-chevron-down"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              stroke-width="2"
+              stroke="currentColor"
+              fill="none"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
               <rect x="0" y="0" width="24" height="24" stroke="none"></rect>
               <polyline points="6 9 12 15 18 9" />
             </svg>
@@ -96,56 +115,117 @@
             </div>
             <div class="color-theme-body">
               <div class="color-theme-body-section">
-                <div
-                  class="color-theme-preview light"
-                  :style="{
-                    backgroundColor: paletteColor.lightColor
-                  }"
-                >
+                <div class="color-theme-preview light">
+                  <div class="color-theme-swatch">
+                    <div class="color-theme-swatch-background"></div>
+                    <div
+                      class="color-theme-swatch-color"
+                      :style="{
+                        backgroundColor: paletteColor.lightRawColor
+                      }"
+                    ></div>
+                  </div>
                 </div>
                 <div class="color-theme-fieldset">
-                  <input
-                    type="text"
-                    disabled
-                    maxlength="7"
-                    class="color-theme-input"
-                    placeholder="Hex color"
-                    :value="paletteColor.lightColor"
-                  />
+                  <div class="color-theme-fieldset-section">
+                    <input
+                      :id="paletteColor.lightColor"
+                      type="text"
+                      disabled
+                      maxlength="7"
+                      class="color-theme-input hex"
+                      placeholder="Hex color"
+                      :value="paletteColor.lightColor"
+                    />
+                    <label
+                      :for="paletteColor.lightColor"
+                      class="color-theme-input-label"
+                    >
+                      Hex color
+                    </label>
+                  </div>
+                  <div class="color-theme-fieldset-section small">
+                    <input
+                      :id="paletteColor.lightAlpha"
+                      type="number"
+                      disabled
+                      min="0"
+                      max="100"
+                      class="color-theme-input alpha"
+                      :value="paletteColor.lightAlpha * 100"
+                    >
+                    <label
+                      :for="paletteColor.lightAlpha"
+                      class="color-theme-input-label"
+                    >
+                      Alpha
+                    </label>
+                  </div>
                 </div>
               </div>
               <div class="color-theme-body-section">
-                <div
-                  :class="[
-                    'color-theme-preview dark',
-                    { empty: !paletteColor.isValidColor }
-                  ]"
-                  :style="{
-                    backgroundColor: paletteColor.darkColor
-                  }"
-                >
+                <div class="color-theme-preview dark">
+                  <div class="color-theme-swatch">
+                    <div class="color-theme-swatch-background"></div>
+                    <div
+                      class="color-theme-swatch-color"
+                      :style="{
+                        backgroundColor: paletteColor.darkRawColor
+                      }"
+                    ></div>
+                  </div>
                 </div>
                 <div class="color-theme-fieldset">
-                  <input
-                    type="text"
-                    maxlength="7"
-                    class="color-theme-input"
-                    placeholder="Hex color"
-                    spellcheck="false"
-                    :value="paletteColor.darkColor"
-                    v-on:keyup="updatePaletteDarkColor(paletteColor.name, $event)"
-                    v-on:change="updatePaletteDarkColor(paletteColor.name, $event)"
-                    v-on:paste="updatePaletteDarkColor(paletteColor.name, $event)"
-                  />
-                  <div class="color-theme-picker">
-                    <span>🎨</span>
-                    <input
-                      type="color"
-                      value=""
-                      v-on:input="updatePaletteDarkColor(paletteColor.name, $event)"
-                      v-on:change="updatePaletteDarkColor(paletteColor.name, $event)"
-                      v-on:click="setInputRandomColorValue($event)"
+                  <div class="color-theme-fieldset-section">
+                    <div class="color-theme-input-wrapper">
+                      <input
+                        type="text"
+                        maxlength="7"
+                        class="color-theme-input"
+                        placeholder="Hex color"
+                        spellcheck="false"
+                        :value="paletteColor.darkColor" v-on:input="updatePaletteDarkColor(paletteColor.name, $event)"
+                      />
+                      <div class="color-theme-picker">
+                        <verte
+                          picker="square"
+                          model="hex"
+                          menu-position="center"
+                          :value="paletteColor.darkRawColor"
+                          :show-history="null"
+                          :draggable="false"
+                          v-on:input="
+                            updatePaletteDarkColor(paletteColor.name, $event, true)
+                          "
+                        >
+                          <span class="color-theme-picker-icon">🎨</span>
+                        </verte>
+                      </div>
+                    </div>
+                    <label
+                      :for="paletteColor.darkColor"
+                      class="color-theme-input-label"
                     >
+                      Hex color
+                    </label>
+                  </div>
+                  <div class="color-theme-fieldset-section small">
+                    <input
+                      :id="paletteColor.darkAlpha"
+                      type="number"
+                      maxlength="3"
+                      min="0"
+                      max="100"
+                      class="color-theme-input alpha"
+                      :value="Math.round(paletteColor.darkAlpha * 100)"
+                      v-on:input="updatePaletteDarkAlpha(paletteColor.name, $event)"
+                    >
+                    <label
+                      :for="paletteColor.darkAlpha"
+                      class="color-theme-input-label"
+                    >
+                      Alpha
+                    </label>
                   </div>
                 </div>
               </div>
