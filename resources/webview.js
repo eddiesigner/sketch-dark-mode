@@ -135,7 +135,7 @@ window.createPaletteUI = (
       },
       orderColorsByName(colors) {
         if (colors.length > 0) {
-          return colors.sort(function (a, b) {
+          return colors.sort((a, b) => {
             return a.name.localeCompare(b.name)
           })
         }
