@@ -159,23 +159,25 @@ export const selectPage = (page) => {
  */
 const switchColor = (color) => {
   if (color.swatchID()) {
-    const foundColor = savedDarkThemeColors.find((darkThemeColor) => {
-      return (
-        darkThemeColor.name ==
-        doc.sketchObject
-          .documentData()
-          .sharedSwatches()
-          .swatchWithID(color.swatchID())
-          .name()
-      );
-    }).color;
+    const swatch = doc.sketchObject
+      .documentData()
+      .sharedSwatches()
+      .swatchWithID(color.swatchID())
 
-    if (foundColor) {
-      return foundColor;
+    if (swatch) {
+      const foundColor = savedDarkThemeColors.find((darkThemeColor) => {
+        return (
+          darkThemeColor.name == swatch.name()
+        )
+      }).color
+
+      if (foundColor) {
+        return foundColor
+      }
     }
   }
 
-  return color;
+  return color
 }
 
 /**
