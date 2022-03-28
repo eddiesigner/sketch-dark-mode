@@ -88,7 +88,7 @@ export const switchArtboardTheme = (artboard) => {
     return
   }
 
-  artboard.background.color = switchColor(artboard.background.color)
+  artboard.background.color = switchColor(artboard.background.sketchObject.color())
 }
 
 /**
@@ -154,38 +154,28 @@ export const selectPage = (page) => {
 
 /**
  * 
- * @param {Color} color 
+ * @param {MSColor} color
  * @returns {Color}
  */
 const switchColor = (color) => {
-  if (baseColors.length > 0) {
-    const foundColor = baseColors.find((currentColor) => {
-      return currentColor.color === color
-    })
+  if (color.swatchID()) {
+    const foundColor = savedDarkThemeColors.find((darkThemeColor) => {
+      return (
+        darkThemeColor.name ==
+        doc.sketchObject
+          .documentData()
+          .sharedSwatches()
+          .swatchWithID(color.swatchID())
+          .name()
+      );
+    }).color;
 
     if (foundColor) {
-      return getDarkThemeColor(foundColor)
+      return foundColor;
     }
   }
 
-  return color
-}
-
-/**
- * 
- * @param {Color} baseColor 
- * @returns {Color}
- */
-const getDarkThemeColor = (baseColor) => {
-  const foundColor = savedDarkThemeColors.find((darkThemeColor) => {
-    return darkThemeColor.name === baseColor.name
-  })
-
-  if (foundColor) {
-    return foundColor.color
-  }
-
-  return baseColor.color
+  return color;
 }
 
 /**
@@ -193,7 +183,7 @@ const getDarkThemeColor = (baseColor) => {
  * @param {Text} textLayer 
  */
 const switchTextTheme = (textLayer) => {
-  textLayer.style.textColor = switchColor(textLayer.style.textColor)
+  textLayer.style.textColor = switchColor(textLayer.style.sketchObject.textStyle().attributes().MSAttributedStringColorAttribute)
 }
 
 /**
@@ -209,14 +199,14 @@ const switchShapeTheme = (shapeLayer) => {
         const fillType = hasSketchFillTypeSupport() ? style.fillType : style.fill
 
         if (fillType === Style.FillType.Color) {
-          style.color = switchColor(style.color)
+          style.color = switchColor(style.sketchObject.color())
         }
 
         if (fillType === Style.FillType.Gradient) {
           const stops = style.gradient.stops
 
           for (let i = 0, l = stops.length; i < l; i++) {
-            stops[i].color = switchColor(stops[i].color)
+            stops[i].color = switchColor(stops[i].sketchObject.color())
           }
         }
 
