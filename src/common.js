@@ -88,7 +88,7 @@ export const switchArtboardTheme = (artboard) => {
     return
   }
 
-  artboard.background.color = switchColor(artboard.background.sketchObject.color())
+  artboard.background.color = switchColor(artboard.sketchObject.backgroundColor())
 }
 
 /**
