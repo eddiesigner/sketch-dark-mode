@@ -227,6 +227,8 @@ const switchShapeTheme = (shapeLayer) => {
 const switchSymbolInstanceTheme = (symbolInstance) => {
   const group = symbolInstance.detach()
 
+  switchShapeTheme(group)
+
   if (!hasSketchFindMethodSupport()) {
     switchNativeLayersBasedOnType(group, 'SymbolInstance')
   } else {
