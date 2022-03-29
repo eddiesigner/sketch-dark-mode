@@ -158,25 +158,32 @@ export const selectPage = (page) => {
  * @returns {Color}
  */
 const switchColor = (color) => {
+
+  // Ensure color is associated with a color variable
   if (color.swatchID()) {
+
+    // Get associated color variable
     const swatch = doc.sketchObject
       .documentData()
       .sharedSwatches()
       .swatchWithID(color.swatchID())
 
+    // Ensure color variable hasn’t been deleted
     if (swatch) {
-      const foundColor = savedDarkThemeColors.find((darkThemeColor) => {
-        return (
-          darkThemeColor.name == swatch.name()
-        )
-      }).color
 
+      // Look for dark theme color based on color variable name
+      const foundColor = savedDarkThemeColors.find((darkThemeColor) => {
+        return darkThemeColor.name == swatch.name()
+      })
+
+      // Make sure a dark theme color for this color variable exists
       if (foundColor) {
-        return foundColor
+        return foundColor.color
       }
     }
   }
 
+  // Return same color if no dark theme color is found
   return color
 }
 
