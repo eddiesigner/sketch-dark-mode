@@ -5,33 +5,17 @@ import BrowserWindow from 'sketch-module-web-view'
 import { getWebview } from 'sketch-module-web-view/remote'
 import {
   getDocumentData,
-  isSketchSupportedVersion,
-  getDocumentColors
+  isSketchSupportedVersion
 } from './utils'
+
+import {
+  getRegularHexValue
+} from './../resources/utils'
 
 const webviewIdentifier = 'sketch-dark-mode.webview'
 const doc = sketch.getSelectedDocument()
-const documentColors = getDocumentColors(doc)
 const documentData = getDocumentData(doc)
-const { savedSchemeType, savedDarkThemeColors, savedLibraryId } = documentData
 const libraries = sketch.getLibraries()
-const mappedLibraries = []
-
-libraries.forEach(library => {
-  try {
-    const libDocument = library.getDocument()
-    mappedLibraries.push({
-      type: library.type,
-      id: library.id,
-      name: library.name,
-      valid: library.valid,
-      enabled: library.enabled,
-      colors: getDocumentColors(libDocument)
-    })
-  } catch (error) {
-    console.log(error)
-  }
-})
 
 const closeWwebView = () => {
   const existingWebview = getWebview(webviewIdentifier)
@@ -88,51 +72,70 @@ export default () => {
     closeWwebView()
   })
 
-  webContents.on('saveDarkThemePalette', (data) => {
-    Settings.setSettingForKey(
-      `${doc.id}-dark-theme-scheme-type`,
-      data.schemeType
-    )
-    Settings.setDocumentSettingForKey(
-      doc,
-      `${doc.id}-dark-theme-scheme-type`,
-      data.schemeType
-    )
-    Settings.setSettingForKey(
-      `${doc.id}-dark-theme-colors`,
-      data.darkThemeColors
-    )
-    Settings.setDocumentSettingForKey(
-      doc,
-      `${doc.id}-dark-theme-colors`,
-      data.darkThemeColors
-    )
-    Settings.setSettingForKey(
-      `${doc.id}-dark-theme-selected-library`,
-      data.selectedLibraryId
-    )
-    Settings.setDocumentSettingForKey(
-      doc,
-      `${doc.id}-dark-theme-selected-library`,
-      data.selectedLibraryId
-    )
+  webContents.on('saveDarkThemePalette', (schemes) => {
 
-    if (data.darkThemeColors && data.darkThemeColors.length > 0) {
-      UI.message('🎉 The color palette has been successfully saved!')
-    } else {
-      UI.message('🙃 Note that you just saved an empty color palette.')
+    const colors = []
+
+    for (const [, scheme] of Object.entries(schemes)) {
+      scheme.colors.map(color => colors.push(color))
     }
+
+    Settings.setSettingForKey(
+      `${doc.id}-dark-mode-colors`,
+      Object.fromEntries(colors.map(color => [color.id, color]))
+    )
+    Settings.setDocumentSettingForKey(
+      doc,
+      `${doc.id}-dark-mode-colors`,
+      Object.fromEntries(colors.map(color => [color.id, color]))
+    )
 
     closeWwebView()
   })
 
   webContents.executeJavaScript(
     `createPaletteUI(
-      ${JSON.stringify(savedSchemeType)},
-      ${JSON.stringify(documentColors)},
-      ${JSON.stringify(savedDarkThemeColors)},
-      ${JSON.stringify(mappedLibraries)},
-      ${JSON.stringify(savedLibraryId)}
+      ${JSON.stringify({
+        ...Object.fromEntries(libraries.filter(library => library.valid).map(library =>
+          [library.id, {
+            name: library.name,
+            enabled: library.enabled,
+            colors: library.getImportableSwatchReferencesForDocument(doc).map(swatch => {
+              const s = library.getDocument().swatches.find(s => s.name == swatch.name)
+              return {
+                darkRawColor: '#',
+                darkColor: '#',
+                darkAlpha: 1,
+                isValidColor: false,
+                ...(documentData && documentData[swatch.id]),
+                id: swatch.id,
+                name: swatch.name,
+                lightRawColor: s.color,
+                lightColor: getRegularHexValue(s.color),
+                lightAlpha: s.referencingColor.alpha()
+              }
+            })
+          }]
+        )),
+        document: {
+          name: "Document colors",
+          enabled: true,
+          colors: doc.swatches.map(swatch => {
+            return {
+              darkRawColor: '#',
+              darkColor: '#',
+              darkAlpha: 1,
+              isValidColor: true,
+              ...(documentData && documentData[swatch.id]),
+              id: swatch.id,
+              name: swatch.name,
+              lightRawColor: swatch.color,
+              lightColor: getRegularHexValue(swatch.color),
+              lightAlpha: swatch.referencingColor.alpha()
+            }
+          })
+        }
+      })}
     )`
   )
     .then((res) => {

@@ -1,7 +1,6 @@
 import Vue from './lib/vue'
 import Verte from './lib/verte'
 import {
-  getAlphaValue,
   setAlphaValue,
   isValidColor,
   getRegularHexValue,
@@ -23,12 +22,10 @@ const interceptClickEvent = (event) => {
   }
 }
 
+// savedDarkThemeColors,
+
 window.createPaletteUI = (
-  savedSchemeType,
-  documentColors,
-  savedDarkThemeColors,
-  libraries,
-  savedLibraryId
+  schemes,
 ) => {
   app = new Vue({
     el: '#app',
@@ -36,102 +33,45 @@ window.createPaletteUI = (
       verte: Verte,
     },
     data: {
-      schemeType: 'document',
+      selectedSchemeId: "document",
+      schemes: {},
       paletteColors: [],
-      savedDarkThemeColors: [],
-      libraries: [],
-      selectedLibraryId: '',
-      selectedLibraryColors: [],
-      showSettingsMenu: false
+      savedDarkThemeColors: []
     },
     computed: {
-      isDocumentSchemeSelected() {
-        return this.schemeType === 'document'
-      },
       paletteColorsHaveErrors() {
         return this.paletteColors.length === 0 || hasColorsWithoutName(this.paletteColors)
       },
-      showColorList() {
-        if (this.isDocumentSchemeSelected) {
-          return this.paletteColors.length > 0 && !this.paletteColorsHaveErrors
-        }
-
-        return this.selectedLibraryId &&
+      showColors() {
+        return this.selectedSchemeId &&
           this.paletteColors.length > 0 &&
           !this.paletteColorsHaveErrors
       },
-      showErrorMessage() {
-        if (this.isDocumentSchemeSelected) {
-          return this.paletteColorsHaveErrors
-        }
-
-        return this.selectedLibraryId &&
-          (
-            this.paletteColors.length === 0 ||
-            hasColorsWithoutName(this.paletteColors)
-          )
-      },
       errorMessage() {
-        const fileTye = this.isDocumentSchemeSelected ? 'document' : 'library'
+        const fileTye = this.selectedSchemeId === "document" ? "document" : "library"
 
         return `1. Please be sure to create Color Variables for your ${fileTye} in Sketch first (or Color Presets if you\'re not running Sketch 69 or above).<br><br>2. Also make sure that all colors are assigned a unique name (default hex color names are not supported) and that your layers use those colors.<br><br>3. If your colors are defined in a Library, make sure you select it by switching to library mode from the gear button at the top.`
       }
     },
     watch: {
-      schemeType() {
-        this.switchPalette()
-      },
-      selectedLibraryId() {
-        if (this.selectedLibraryId) {
-          this.switchPalette()
-        } else {
-          this.paletteColors = []
-        }
+      selectedSchemeId() {
+        this.selectScheme()
       }
     },
     mounted() {
-      if (savedSchemeType != null) {
-        this.schemeType = savedSchemeType
-      }
 
-      if (savedLibraryId != null) {
-        this.selectedLibraryId = savedLibraryId
-      }
+      this.schemes = schemes
 
-      this.savedDarkThemeColors = savedDarkThemeColors
-      this.libraries = libraries
-
-      this.switchPalette()
+      this.selectScheme()
     },
     methods: {
-      makePaletteColors(currentColors) {
-        const mappedColors = []
+      selectScheme () {
+        if(!this.schemes[this.selectedSchemeId]){
+          this.selectedSchemeId = "document"
+          return
+        }
 
-        currentColors.forEach((currentColor) => {
-          let darkColor = null
-
-          if (this.savedDarkThemeColors && this.savedDarkThemeColors.length > 0) {
-            darkColor = this.savedDarkThemeColors.find((darkThemeColor) => {
-              return darkThemeColor.name === currentColor.name
-            })
-          }
-
-          mappedColors.push({
-            type: currentColor.type,
-            name: currentColor.name,
-            lightRawColor: currentColor.color,
-            lightColor: getRegularHexValue(currentColor.color),
-            lightAlpha: getAlphaValue(currentColor.color),
-            darkRawColor: darkColor ? darkColor.color : '#',
-            darkColor:
-              darkColor ? getRegularHexValue(darkColor.color) : '#',
-            darkAlpha: darkColor ? getAlphaValue(darkColor.color) : 1,
-            isValidColor:
-              darkColor ? isValidColor(getRegularHexValue(darkColor.color)) : false
-          })
-        })
-
-        return this.orderColorsByName(mappedColors)
+        this.paletteColors = this.orderColorsByName(this.schemes[this.selectedSchemeId].colors)
       },
       orderColorsByName(colors) {
         if (colors.length > 0) {
@@ -141,33 +81,6 @@ window.createPaletteUI = (
         }
 
         return []
-      },
-      switchPalette() {
-        if (this.isDocumentSchemeSelected) {
-          this.paletteColors = this.makePaletteColors(documentColors)
-        } else if (this.selectedLibraryId) {
-          this.paletteColors = this.makePaletteColors(this.getColorsFromLibrary())
-        }
-      },
-      getColorsFromLibrary() {
-        if (this.libraries.length > 0 && this.selectedLibraryId) {
-          const foundLibrary = this.libraries.find((library) => {
-            return library.id === this.selectedLibraryId
-          })
-
-          if (foundLibrary) {
-            return foundLibrary.colors
-          }
-        }
-
-        return []
-      },
-      selectScheme(scheme) {
-        this.schemeType = scheme
-        this.toggleSettingsMenu()
-      },
-      toggleSettingsMenu() {
-        this.showSettingsMenu = !this.showSettingsMenu
       },
       updatePaletteDarkColor(colorName, $event, fromColorPicker = false) {
         const foundColorIndex = this.paletteColors.findIndex((paletteColor) => {
@@ -226,23 +139,7 @@ window.createPaletteUI = (
         }
       },
       savePalette() {
-        const darkThemeColors = []
-
-        this.paletteColors.forEach((paletteColor) => {
-          if (isValidColor(paletteColor.darkColor)) {
-            darkThemeColors.push({
-              type: paletteColor.type,
-              name: paletteColor.name,
-              color: paletteColor.darkRawColor
-            })
-          }
-        })
-
-        window.postMessage('saveDarkThemePalette', {
-          schemeType: this.schemeType,
-          selectedLibraryId: this.selectedLibraryId,
-          darkThemeColors
-        })
+        window.postMessage('saveDarkThemePalette', this.schemes)
       },
       closeWindow() {
         window.postMessage('closeWindow')

@@ -187,6 +187,7 @@ input, textarea {
 .body {
   flex: 1;
   position: relative;
+  padding-top: 1.2rem;
   z-index: 1;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;

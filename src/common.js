@@ -2,43 +2,20 @@ import sketch from 'sketch/dom'
 import {
   getDocumentData,
   hasSketchFindMethodSupport,
-  hasSketchFillTypeSupport,
-  getDocumentColors
+  hasSketchFillTypeSupport
 } from './utils'
 
 const Style = sketch.Style
 const doc = sketch.getSelectedDocument()
-const documentColors = getDocumentColors(doc)
 const documentData = getDocumentData(doc)
-const { savedSchemeType, savedDarkThemeColors, savedLibraryId } = documentData
 const libraries = sketch.getLibraries()
-let baseColors = []
-
-if (!savedSchemeType != null && savedSchemeType === 'document') {
-  baseColors = documentColors
-} else if (!savedSchemeType != null && savedSchemeType === 'library') {
-  if (libraries.length > 0 && savedLibraryId != null) {
-    const foundLibrary = libraries.find((library) => {
-      return library.id === savedLibraryId
-    })
-
-    if (foundLibrary) {
-      try {
-        const libDocument = foundLibrary.getDocument()
-        baseColors = getDocumentColors(libDocument)
-      } catch (error) {
-        console.log(error)
-      }
-    }
-  }
-}
 
 /**
  *
  * @returns {Boolean}
  */
 export const isDarkPaletteEmpty = () => {
-  return !savedDarkThemeColors || savedDarkThemeColors.length === 0
+  // return !savedDarkThemeColors || savedDarkThemeColors.length === 0
 }
 
 /**
@@ -162,24 +139,12 @@ const switchColor = (color) => {
   // Ensure color is associated with a color variable
   if (color.swatchID()) {
 
-    // Get associated color variable
-    const swatch = doc.sketchObject
-      .documentData()
-      .sharedSwatches()
-      .swatchWithID(color.swatchID())
+    // Look for dark theme color based on color variable name
+    const foundColor = documentData && documentData[color.swatchID()]
 
-    // Ensure color variable hasn’t been deleted
-    if (swatch) {
-
-      // Look for dark theme color based on color variable name
-      const foundColor = savedDarkThemeColors.find((darkThemeColor) => {
-        return darkThemeColor.name == swatch.name()
-      })
-
-      // Make sure a dark theme color for this color variable exists
-      if (foundColor) {
-        return foundColor.color
-      }
+    // Make sure a dark theme color for this color variable exists
+    if (foundColor) {
+      return foundColor.darkColor
     }
   }
 
@@ -208,14 +173,14 @@ const switchShapeTheme = (shapeLayer) => {
         const fillType = hasSketchFillTypeSupport() ? style.fillType : style.fill
 
         if (fillType === Style.FillType.Color) {
-          style.color = switchColor(style.sketchObject.color())
+          style.color = switchColor(style.sketchObject.color() || style.color)
         }
 
         if (fillType === Style.FillType.Gradient) {
           const stops = style.gradient.stops
 
           for (let i = 0, l = stops.length; i < l; i++) {
-            stops[i].color = switchColor(stops[i].sketchObject.color())
+            stops[i].color = switchColor(stops[i].sketchObject.color() || stops[i].color)
           }
         }
 
